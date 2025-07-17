@@ -154,10 +154,11 @@
         
         <!-- VISTA 5: CURSOS -->
         <div id="coursesView" class="view">
-            <div class="bg-white p-8 rounded-lg shadow-lg text-center">
-                <h2 class="text-3xl font-bold mb-4">Próximamente: Cursos</h2>
-                <p class="text-gray-600">Estamos preparando una sección de cursos para ayudarte a potenciar tu negocio. ¡Vuelve pronto!</p>
-                 <img src="https://placehold.co/600x400/3B82F6/FFFFFF?text=Cursos+en+Construcción" alt="Cursos en construcción" class="mx-auto mt-6 rounded-lg">
+            <div class="px-4">
+                <h1 class="text-3xl font-bold mb-6">Cursos para Emprendedores</h1>
+                <div id="course-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Las tarjetas de cursos se insertarán aquí -->
+                </div>
             </div>
         </div>
 
@@ -194,6 +195,58 @@
                 ]
             }
         ];
+        
+        // Datos de ejemplo para los cursos
+        const courses = [
+            {
+                id: 1,
+                title: 'Administración para Pequeños Negocios',
+                category: 'Administración',
+                instructor: 'Ana Gómez',
+                description: 'Aprende los fundamentos para administrar tu negocio eficientemente, desde inventarios hasta gestión de personal.',
+                image: 'https://placehold.co/600x400/60a5fa/FFFFFF?text=Administración'
+            },
+            {
+                id: 2,
+                title: 'Finanzas para No Financieros',
+                category: 'Finanzas',
+                instructor: 'Carlos Mendoza',
+                description: 'Entiende los números de tu empresa. Aprende sobre flujo de caja, presupuestos y cómo tomar decisiones financieras inteligentes.',
+                image: 'https://placehold.co/600x400/34d399/FFFFFF?text=Finanzas'
+            },
+            {
+                id: 3,
+                title: 'Marketing Digital en Redes Sociales',
+                category: 'Marketing',
+                instructor: 'Sofía Castillo',
+                description: 'Descubre cómo usar Facebook, Instagram y WhatsApp para atraer más clientes y aumentar tus ventas.',
+                image: 'https://placehold.co/600x400/fbbf24/FFFFFF?text=Marketing'
+            },
+            {
+                id: 4,
+                title: 'Optimización de Procesos y Operaciones',
+                category: 'Administración',
+                instructor: 'Ana Gómez',
+                description: 'Haz más con menos. Mejora la eficiencia de tus operaciones diarias para reducir costos y mejorar la calidad.',
+                image: 'https://placehold.co/600x400/818cf8/FFFFFF?text=Procesos'
+            },
+            {
+                id: 5,
+                title: 'Estrategias de Precios para tus Productos',
+                category: 'Finanzas',
+                instructor: 'Carlos Mendoza',
+                description: 'Define precios competitivos que maximicen tus ganancias y atraigan a tus clientes ideales.',
+                image: 'https://placehold.co/600x400/f87171/FFFFFF?text=Precios'
+            },
+            {
+                id: 6,
+                title: 'Crea tu Marca desde Cero',
+                category: 'Marketing',
+                instructor: 'Sofía Castillo',
+                description: 'Construye una identidad de marca sólida y memorable que conecte emocionalmente con tu público.',
+                image: 'https://placehold.co/600x400/f472b6/FFFFFF?text=Branding'
+            }
+        ];
 
         // Variable para guardar el usuario que ha iniciado sesión
         let currentUser = null;
@@ -213,6 +266,7 @@
             // Lógica específica al mostrar una vista
             if (viewId === 'homeView') renderBusinessList();
             if (viewId === 'myProfileView' && currentUser) renderMyProfile();
+            if (viewId === 'coursesView') renderCourses();
         }
 
         // --- RENDERIZADO DE CONTENIDO DINÁMICO ---
@@ -235,6 +289,26 @@
             });
         }
         
+        function renderCourses() {
+            const listContainer = document.getElementById('course-list');
+            listContainer.innerHTML = ''; // Limpiar lista
+            courses.forEach(course => {
+                const card = `
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+                        <img src="${course.image}" alt="Imagen del curso ${course.title}" class="w-full h-40 object-cover">
+                        <div class="p-4 flex flex-col flex-grow">
+                            <span class="text-xs font-semibold text-blue-600 bg-blue-100 py-1 px-2 rounded-full self-start">${course.category}</span>
+                            <h3 class="text-lg font-bold mt-2">${course.title}</h3>
+                            <p class="text-gray-600 text-sm mt-1 flex-grow">${course.description}</p>
+                            <p class="text-xs text-gray-500 mt-2">Por: ${course.instructor}</p>
+                            <button class="mt-4 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 font-semibold">Ver más</button>
+                        </div>
+                    </div>
+                `;
+                listContainer.innerHTML += card;
+            });
+        }
+
         function showSellerProfile(businessId) {
             const business = businesses.find(b => b.id === businessId);
             if (!business) return;
