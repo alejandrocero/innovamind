@@ -202,12 +202,13 @@
                 name: 'Frutería "La Cosecha"',
                 email: 'fruteria@test.com',
                 password: '123',
-                description: 'Las frutas y verduras más frescas de la región, directo del campo a tu mesa. Ofrecemos servicio a domicilio.',
-                phone: '521669887766',
+                description: 'Las frutas y verduras más frescas de la región, directo del campo a tu mesa.',
+                phone: '5216641112233',
+                coverImage: 'https://images.unsplash.com/photo-1518843875459-f738682238a6?q=80&w=400&auto=format&fit=crop',
                 catalog: [
-                    { id: 101, name: 'Kilo de Manzana Gala', price: 45.50, image: 'https://placehold.co/400x300/f87171/ffffff?text=Manzanas' },
-                    { id: 102, name: 'Kilo de Plátano', price: 25.00, image: 'https://placehold.co/400x300/facc15/ffffff?text=Plátanos' },
-                    { id: 103, name: 'Canasta de Verduras', price: 150.00, image: 'https://placehold.co/400x300/4ade80/ffffff?text=Verduras' }
+                    { id: 101, name: 'Kilo de Manzana Gala', price: 45.50, image: 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?q=80&w=400&auto=format&fit=crop' },
+                    { id: 102, name: 'Kilo de Plátano', price: 25.00, image: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?q=80&w=400&auto=format&fit=crop' },
+                    { id: 103, name: 'Canasta de Verduras', price: 150.00, image: 'https://images.unsplash.com/photo-1518843875459-f738682238a6?q=80&w=400&auto=format&fit=crop' }
                 ]
             },
             {
@@ -217,9 +218,24 @@
                 password: '123',
                 description: 'Piezas únicas hechas a mano por artesanos locales. Alebrijes, textiles y cerámica de alta calidad.',
                 phone: '5215554443322',
+                coverImage: 'https://images.unsplash.com/photo-1634403816434-ee0d344837e1?q=80&w=400&auto=format&fit=crop',
                 catalog: [
-                    { id: 201, name: 'Alebrije de Colores', price: 850.00, image: 'https://placehold.co/400x300/c084fc/ffffff?text=Alebrije' },
-                    { id: 202, name: 'Jarrón de Talavera', price: 1200.00, image: 'https://placehold.co/400x300/60a5fa/ffffff?text=Jarrón' },
+                    { id: 201, name: 'Alebrije de Colores', price: 850.00, image: 'https://images.unsplash.com/photo-1634403816434-ee0d344837e1?q=80&w=400&auto=format&fit=crop' },
+                    { id: 202, name: 'Jarrón de Talavera', price: 1200.00, image: 'https://images.unsplash.com/photo-1574015927949-968a11958c14?q=80&w=400&auto=format&fit=crop' }
+                ]
+            },
+            {
+                id: 3,
+                name: 'Panadería "El Trigo de Oro"',
+                email: 'panaderia@test.com',
+                password: '123',
+                description: 'Pan artesanal horneado diariamente. Prueba nuestras conchas, bolillos y pasteles.',
+                phone: '5213334445566',
+                coverImage: 'https://images.unsplash.com/photo-1588998133405-c582b4503764?q=80&w=400&auto=format&fit=crop',
+                catalog: [
+                    { id: 301, name: 'Concha de Vainilla', price: 15.00, image: 'https://images.unsplash.com/photo-1588998133405-c582b4503764?q=80&w=400&auto=format&fit=crop' },
+                    { id: 302, name: 'Pastel de Chocolate', price: 350.00, image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=400&auto=format&fit=crop' },
+                    { id: 303, name: 'Bolillo Fresco (5 pz)', price: 10.00, image: 'https://images.unsplash.com/photo-1621810810003-247b21089a58?q=80&w=400&auto=format&fit=crop' }
                 ]
             }
         ];
@@ -305,7 +321,7 @@
             businesses.forEach(business => {
                 const card = `
                     <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="showSellerProfile(${business.id})">
-                        <img src="${business.catalog[0]?.image || 'https://placehold.co/400x300/e0e0e0/333333?text=Negocio'}" alt="Imagen de ${business.name}" class="w-full h-32 object-cover">
+                        <img src="${business.coverImage || 'https://placehold.co/400x300/e0e0e0/333333?text=Negocio'}" alt="Imagen de ${business.name}" class="w-full h-32 object-cover">
                         <div class="p-3">
                             <h3 class="text-md font-bold truncate">${business.name}</h3>
                             <p class="text-gray-500 text-xs mt-1 truncate">${business.description}</p>
@@ -411,6 +427,7 @@
                 password,
                 description: '¡Bienvenido! Edita tu descripción desde la sección "Mi Perfil".',
                 phone: '',
+                coverImage: 'https://placehold.co/400x300/cccccc/ffffff?text=Tu+Negocio',
                 catalog: []
             };
             
