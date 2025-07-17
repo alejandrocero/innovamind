@@ -27,6 +27,11 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+        /* Estilos para la ventana de chat */
+        #chat-window {
+            height: 250px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -163,6 +168,29 @@
         </div>
 
     </main>
+
+    <!-- MASCOTA Y CHATBOT -->
+    <div id="mascot-button" class="fixed bottom-5 right-5 bg-blue-600 p-3 rounded-full shadow-lg cursor-pointer hover:bg-blue-700 transition-transform transform hover:scale-110 z-50">
+        <!-- Icono de robot SVG -->
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V4m0 16v-2M8 8l1.414-1.414M14.586 14.586L16 16m-1.414-8.586L16 6m-8.586 8.586L6 16M12 18a6 6 0 100-12 6 6 0 000 12z"></path></svg>
+    </div>
+
+    <div id="chatbot-modal" class="hidden fixed bottom-20 right-5 bg-white w-80 rounded-lg shadow-xl border border-gray-200 flex flex-col z-40">
+        <div class="p-3 bg-blue-600 text-white rounded-t-lg flex justify-between items-center">
+            <h4 class="font-bold">InnovaBot</h4>
+            <button id="close-chatbot-modal" class="text-white font-bold text-xl">&times;</button>
+        </div>
+        <div id="chat-window" class="p-4 flex-grow">
+            <!-- Los mensajes del chat se insertarán aquí -->
+        </div>
+        <div class="p-2 border-t">
+            <form id="chat-form" class="flex">
+                <input type="text" id="chat-input" class="flex-grow border rounded-l-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Escribe 'ayuda'...">
+                <button type="submit" class="bg-blue-600 text-white px-4 rounded-r-md hover:bg-blue-700 font-semibold text-sm">Enviar</button>
+            </form>
+        </div>
+    </div>
+
 
     <script>
         // --- SIMULACIÓN DE BASE DE DATOS Y ESTADO DE LA APP ---
@@ -452,6 +480,85 @@
             updateUI();
             showView('homeView');
         }
+
+        // --- LÓGICA DEL CHATBOT ---
+        const mascotButton = document.getElementById('mascot-button');
+        const chatbotModal = document.getElementById('chatbot-modal');
+        const closeChatbotModal = document.getElementById('close-chatbot-modal');
+        const chatWindow = document.getElementById('chat-window');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+
+        mascotButton.addEventListener('click', () => {
+            chatbotModal.classList.toggle('hidden');
+            if (!chatbotModal.classList.contains('hidden') && chatWindow.children.length === 0) {
+                 setTimeout(() => {
+                    addMessageToChat('¡Hola! Soy InnovaBot. ¿En qué puedo ayudarte? Escribe "ayuda" para ver una lista de comandos.', 'bot');
+                }, 300);
+            }
+        });
+
+        closeChatbotModal.addEventListener('click', () => {
+            chatbotModal.classList.add('hidden');
+        });
+        
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const userMessage = chatInput.value.trim();
+            if (userMessage) {
+                addMessageToChat(userMessage, 'user');
+                handleBotResponse(userMessage);
+                chatInput.value = '';
+            }
+        });
+
+        function addMessageToChat(message, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('mb-2', 'p-2', 'rounded-lg', 'text-sm', 'max-w-xs');
+            messageElement.textContent = message;
+
+            if (sender === 'user') {
+                messageElement.classList.add('bg-blue-500', 'text-white', 'self-end', 'ml-auto');
+            } else {
+                messageElement.classList.add('bg-gray-200', 'text-gray-800', 'self-start', 'mr-auto');
+            }
+            chatWindow.appendChild(messageElement);
+            chatWindow.scrollTop = chatWindow.scrollHeight; // Auto-scroll
+        }
+        
+        function handleBotResponse(message) {
+            const lowerCaseMessage = message.toLowerCase();
+            let botReply = '';
+
+            setTimeout(() => {
+                if (lowerCaseMessage.includes('hola') || lowerCaseMessage.includes('saludos')) {
+                    botReply = '¡Hola! ¿Cómo puedo ayudarte hoy?';
+                } else if (lowerCaseMessage.includes('ayuda')) {
+                    botReply = 'Puedo ayudarte con lo siguiente:\n- Ver "cursos"\n- Ir al "inicio"\n- "Registrar" un negocio\n- Ir a "mi perfil"';
+                } else if (lowerCaseMessage.includes('curso')) {
+                    botReply = '¡Claro! Te llevo a la sección de cursos para que sigas aprendiendo.';
+                    showView('coursesView');
+                } else if (lowerCaseMessage.includes('inicio') || lowerCaseMessage.includes('negocio')) {
+                    botReply = 'Mostrando todos los negocios locales.';
+                    showView('homeView');
+                } else if (lowerCaseMessage.includes('registrar') || lowerCaseMessage.includes('vender')) {
+                    botReply = '¡Genial! Para empezar a vender, solo necesitas crear una cuenta. Te llevo a la página de registro.';
+                    showView('registerView');
+                } else if (lowerCaseMessage.includes('perfil')) {
+                     if(currentUser) {
+                        botReply = 'Entendido, te llevo a tu perfil para que puedas gestionarlo.';
+                        showView('myProfileView');
+                     } else {
+                        botReply = 'Para ver tu perfil, primero necesitas registrarte o iniciar sesión.';
+                        showView('registerView');
+                     }
+                } else {
+                    botReply = "No estoy seguro de entender. Intenta escribir 'ayuda' para ver las opciones que conozco.";
+                }
+                addMessageToChat(botReply, 'bot');
+            }, 500);
+        }
+
 
         // --- INICIALIZACIÓN DE LA APP ---
         
