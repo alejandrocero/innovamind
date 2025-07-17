@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Innovamind - Prototipo</title>
+    <title>Innovamind</title>
     
     <!-- Tailwind CSS para un diseño rápido y moderno -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -65,7 +65,7 @@
         <!-- VISTA 1: INICIO (LISTA DE NEGOCIOS) -->
         <div id="homeView" class="view">
             <h1 class="text-3xl font-bold mb-6 px-4">Negocios Locales</h1>
-            <div id="business-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+            <div id="business-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
                 <!-- Las tarjetas de negocios se insertarán aquí con JavaScript -->
             </div>
         </div>
@@ -126,7 +126,7 @@
 
                 <!-- Sección de Catálogo -->
                 <h3 class="text-2xl font-bold mt-8 mb-4">Mi Catálogo</h3>
-                <div id="my-catalog-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div id="my-catalog-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8">
                     <!-- Productos del usuario -->
                 </div>
 
@@ -223,11 +223,11 @@
             businesses.forEach(business => {
                 const card = `
                     <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="showSellerProfile(${business.id})">
-                        <img src="${business.catalog[0]?.image || 'https://placehold.co/400x300/e0e0e0/333333?text=Negocio'}" alt="Imagen de ${business.name}" class="w-full h-48 object-cover">
-                        <div class="p-4">
-                            <h3 class="text-lg font-bold">${business.name}</h3>
-                            <p class="text-gray-600 text-sm mt-1 truncate">${business.description}</p>
-                            <button class="mt-4 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 text-sm font-semibold">Ver Perfil</button>
+                        <img src="${business.catalog[0]?.image || 'https://placehold.co/400x300/e0e0e0/333333?text=Negocio'}" alt="Imagen de ${business.name}" class="w-full h-32 object-cover">
+                        <div class="p-3">
+                            <h3 class="text-md font-bold truncate">${business.name}</h3>
+                            <p class="text-gray-500 text-xs mt-1 truncate">${business.description}</p>
+                            <button class="mt-3 w-full bg-blue-500 text-white py-1.5 rounded-md hover:bg-blue-600 text-xs font-semibold">Ver Perfil</button>
                         </div>
                     </div>
                 `;
@@ -243,10 +243,10 @@
             let catalogHTML = '';
             business.catalog.forEach(item => {
                 catalogHTML += `
-                    <div class="border rounded-lg p-4 bg-white">
-                        <img src="${item.image || 'https://placehold.co/400x300/e0e0e0/333333?text=Producto'}" alt="${item.name}" class="w-full h-40 object-cover rounded-md mb-4">
-                        <h4 class="font-bold text-md">${item.name}</h4>
-                        <p class="text-green-600 font-semibold text-lg">$${item.price.toFixed(2)}</p>
+                    <div class="border rounded-lg p-2 bg-white">
+                        <img src="${item.image || 'https://placehold.co/400x300/e0e0e0/333333?text=Producto'}" alt="${item.name}" class="w-full h-24 object-cover rounded-md mb-2">
+                        <h4 class="font-bold text-sm truncate">${item.name}</h4>
+                        <p class="text-green-600 font-semibold text-md">$${item.price.toFixed(2)}</p>
                     </div>
                 `;
             });
@@ -263,7 +263,7 @@
                     </a>
                     
                     <h3 class="text-2xl font-bold mt-10 mb-4 border-t pt-6">Catálogo de Productos</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         ${catalogHTML || '<p>Este negocio aún no tiene productos en su catálogo.</p>'}
                     </div>
                 </div>
@@ -283,11 +283,11 @@
             myCatalogContainer.innerHTML = '';
             currentUser.catalog.forEach(item => {
                 const productCard = `
-                    <div class="border rounded-lg p-4 bg-white relative">
-                        <img src="${item.image || 'https://placehold.co/400x300/e0e0e0/333333?text=Producto'}" class="w-full h-32 object-cover rounded-md mb-2">
-                        <h4 class="font-bold text-md">${item.name}</h4>
-                        <p class="text-green-600 font-semibold">$${item.price.toFixed(2)}</p>
-                        <button onclick="removeProduct(${item.id})" class="absolute top-2 right-2 bg-red-500 text-white w-8 h-8 rounded-full hover:bg-red-600 flex items-center justify-center">&times;</button>
+                    <div class="border rounded-lg p-2 bg-white relative">
+                        <img src="${item.image || 'https://placehold.co/400x300/e0e0e0/333333?text=Producto'}" class="w-full h-24 object-cover rounded-md mb-2">
+                        <h4 class="font-bold text-sm truncate">${item.name}</h4>
+                        <p class="text-green-600 font-semibold text-md">$${item.price.toFixed(2)}</p>
+                        <button onclick="removeProduct(${item.id})" class="absolute top-1 right-1 bg-red-500 text-white w-6 h-6 rounded-full hover:bg-red-600 flex items-center justify-center text-xs">&times;</button>
                     </div>
                 `;
                 myCatalogContainer.innerHTML += productCard;
