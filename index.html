@@ -76,6 +76,36 @@
             </div>
         </div>
     </div>
+    
+    <!-- =========== SECCIÓN DEL QUIZ =========== -->
+    <div id="quiz-page" class="hidden">
+        <div class="min-h-screen flex flex-col items-center justify-center p-4">
+            <div class="w-full max-w-2xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-cyan-400 mb-4">Quiz de Diagnóstico</h2>
+                <p class="text-gray-400 mb-8">Responde unas preguntas para personalizar tu experiencia.</p>
+                <div id="quiz-container" class="bg-[#1f283e]/80 p-8 rounded-2xl shadow-lg border border-cyan-500/20">
+                    <!-- Las preguntas del quiz se insertarán aquí -->
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-2.5 mt-8">
+                    <div id="progress-bar" class="bg-cyan-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========== SECCIÓN DE RECOMENDACIONES =========== -->
+    <div id="recommendations-page" class="hidden">
+        <div class="min-h-screen flex flex-col items-center justify-center p-4 text-center">
+            <h2 class="text-3xl font-bold text-cyan-400 mb-4">¡Tus Cursos Recomendados!</h2>
+            <p class="text-gray-400 mb-8 max-w-2xl">Basado en tus respuestas, creemos que estos cursos son el mejor punto de partida para ti.</p>
+            <div id="recommendations-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Las recomendaciones se insertarán aquí -->
+            </div>
+            <button id="continue-to-dashboard-btn" class="p-4 bg-cyan-500 text-white font-bold rounded-lg hover:bg-cyan-400 transition-colors duration-300 text-lg neon-glow-cyan">
+                Explorar todos los cursos
+            </button>
+        </div>
+    </div>
 
     <!-- =========== SECCIÓN DEL PANEL PRINCIPAL (DASHBOARD) =========== -->
     <div id="dashboard-page" class="hidden">
@@ -204,9 +234,14 @@
         const loginPage = document.getElementById('login-page');
         const dashboardPage = document.getElementById('dashboard-page');
         const profilePage = document.getElementById('profile-page');
+        const quizPage = document.getElementById('quiz-page');
+        const recommendationsPage = document.getElementById('recommendations-page');
         const subcategoryPage = document.getElementById('subcategory-page');
         const contentPage = document.getElementById('content-page');
         
+        const quizContainer = document.getElementById('quiz-container');
+        const progressBar = document.getElementById('progress-bar');
+        const recommendationsGrid = document.getElementById('recommendations-grid');
         const subcategoryContainer = document.getElementById('subcategory-container');
         const contentContainer = document.getElementById('content-container');
         const appGrid = document.getElementById('app-grid');
@@ -216,6 +251,7 @@
         const logoutBtns = document.querySelectorAll('.logout-btn');
         const backToDashboardBtns = document.querySelectorAll('.back-to-dashboard-btn');
         const backToSubcategoriesBtn = document.getElementById('back-to-subcategories-btn');
+        const continueToDashboardBtn = document.getElementById('continue-to-dashboard-btn');
 
         const notificationsBtn = document.getElementById('notifications-btn');
         const notificationsPanel = document.getElementById('notifications-panel');
@@ -230,6 +266,8 @@
         const chatMessages = document.getElementById('chat-messages');
 
         let currentAppId = null;
+        let currentQuestionIndex = 0;
+        let userScores = {};
 
         // --- DATOS ---
         const apps = [
@@ -276,6 +314,37 @@
                 { id: 'kaizen', label: 'Mejora Continua (Kaizen)', content: 'Fomenta una cultura de mejora continua en tu organización, donde cada miembro del equipo contribuye con pequeñas mejoras constantes.'}
             ]},
         ];
+        
+        const quizData = [
+            {
+                question: "¿Cuál es tu principal objetivo en este momento?",
+                answers: [
+                    { text: "Lanzar una nueva idea o producto.", scores: ['innovacion', 'analisis'] },
+                    { text: "Optimizar las operaciones de mi negocio actual.", scores: ['herramientas', 'calidad'] },
+                    { text: "Hacer crecer mi base de clientes y ventas.", scores: ['marketing', 'networking'] },
+                    { text: "Mejorar mis conocimientos y habilidades empresariales.", scores: ['mentoria', 'finanzas'] }
+                ]
+            },
+            {
+                question: "¿Cuál es tu mayor desafío?",
+                answers: [
+                    { text: "Desarrollar una estrategia clara y un plan de acción.", scores: ['analisis', 'mentoria'] },
+                    { text: "La gestión de las finanzas y los recursos.", scores: ['finanzas'] },
+                    { text: "Mantenerme al día con la tecnología.", scores: ['innovacion', 'herramientas'] },
+                    { text: "Llegar a nuevos clientes y mercados.", scores: ['marketing', 'networking'] }
+                ]
+            },
+            {
+                question: "¿En qué área sientes que necesitas más apoyo?",
+                answers: [
+                    { text: "Tecnología y sistemas informáticos.", scores: ['herramientas', 'innovacion'] },
+                    { text: "Marketing y estrategias de venta.", scores: ['marketing'] },
+                    { text: "Gestión financiera y contabilidad.", scores: ['finanzas'] },
+                    { text: "Procesos, calidad y eficiencia.", scores: ['calidad', 'mentoria'] }
+                ]
+            }
+        ];
+
         const notifications = [
             { title: 'Nueva tarea asignada', body: 'Revisar la propuesta de marketing.', time: 'hace 5 min' },
             { title: 'Reunión programada', body: 'Reunión de equipo mañana a las 10 AM.', time: 'hace 1 hora' },
@@ -283,10 +352,72 @@
         ];
         let chatHistory = [];
 
-        // --- LÓGICA DE NAVEGACIÓN ---
+        // --- LÓGICA DE NAVEGACIÓN Y QUIZ ---
         function showPage(pageToShow) {
-            [loginPage, dashboardPage, profilePage, subcategoryPage, contentPage].forEach(p => p.classList.add('hidden'));
+            [loginPage, dashboardPage, profilePage, quizPage, recommendationsPage, subcategoryPage, contentPage].forEach(p => p.classList.add('hidden'));
             pageToShow.classList.remove('hidden');
+        }
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            userScores = {};
+            apps.forEach(app => userScores[app.id] = 0);
+            renderQuestion();
+            showPage(quizPage);
+        }
+
+        function renderQuestion() {
+            const questionData = quizData[currentQuestionIndex];
+            quizContainer.innerHTML = `
+                <h3 class="text-xl font-semibold text-white mb-6">${questionData.question}</h3>
+                <div class="space-y-4">
+                    ${questionData.answers.map((answer, index) => `
+                        <button class="answer-btn w-full text-left p-4 bg-cyan-500/10 rounded-lg hover:bg-cyan-500/20 transition-colors" data-scores='${JSON.stringify(answer.scores)}'>
+                            ${answer.text}
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+            document.querySelectorAll('.answer-btn').forEach(btn => {
+                btn.addEventListener('click', handleAnswerClick);
+            });
+            const progress = ((currentQuestionIndex) / quizData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+        
+        function handleAnswerClick(event) {
+            const scores = JSON.parse(event.currentTarget.dataset.scores);
+            scores.forEach(score => userScores[score]++);
+            
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                renderQuestion();
+            } else {
+                progressBar.style.width = '100%';
+                calculateRecommendations();
+            }
+        }
+
+        function calculateRecommendations() {
+            const sortedScores = Object.entries(userScores).sort(([,a],[,b]) => b-a);
+            const top3 = sortedScores.slice(0, 3);
+            renderRecommendations(top3.map(item => item[0]));
+            showPage(recommendationsPage);
+        }
+
+        function renderRecommendations(recommendedAppIds) {
+            recommendationsGrid.innerHTML = '';
+            recommendedAppIds.forEach(appId => {
+                const appData = apps.find(a => a.id === appId);
+                if (appData) {
+                    const appElement = document.createElement('div');
+                    appElement.className = 'flex flex-col items-center justify-center text-center p-4 bg-[#2a3650] rounded-lg shadow-md hover:bg-cyan-500/20 border border-transparent hover:border-cyan-500/50 transition-all duration-300 cursor-pointer aspect-square';
+                    appElement.innerHTML = `<i data-lucide="${appData.icon}" class="w-10 h-10 sm:w-12 sm:h-12 mb-3 text-cyan-400"></i><span class="text-gray-300 text-xs sm:text-sm font-light">${appData.label}</span>`;
+                    appElement.addEventListener('click', () => showSubcategoryPage(appData.id));
+                    recommendationsGrid.appendChild(appElement);
+                }
+            });
+            lucide.createIcons();
         }
         
         function showSubcategoryPage(appId) {
@@ -335,7 +466,8 @@
             }
         }
 
-        loginBtn.addEventListener('click', () => showPage(dashboardPage));
+        loginBtn.addEventListener('click', startQuiz);
+        continueToDashboardBtn.addEventListener('click', () => showPage(dashboardPage));
         profileBtn.addEventListener('click', () => showPage(profilePage));
         logoutBtns.forEach(btn => btn.addEventListener('click', () => showPage(loginPage)));
         backToDashboardBtns.forEach(btn => btn.addEventListener('click', () => showPage(dashboardPage)));
