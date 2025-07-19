@@ -11,10 +11,10 @@
     <style>
         /* Estilo para una fuente más moderna */
         body {
-            font-family: 'Inter', sans-serif; /* Puedes importar Inter desde Google Fonts si lo deseas */
+            font-family: 'Inter', sans-serif;
         }
         .font-brand {
-            font-family: 'Orbitron', sans-serif; /* Una fuente futurista */
+            font-family: 'Orbitron', sans-serif;
         }
         /* Para ocultar la barra de desplazamiento en el chat pero mantener la funcionalidad */
         #chat-messages::-webkit-scrollbar {
@@ -27,6 +27,16 @@
         }
         .neon-glow-pink {
             box-shadow: 0 0 5px rgba(255, 0, 255, 0.5), 0 0 10px rgba(255, 0, 255, 0.3);
+        }
+        /* Animación para el indicador de carga del bot */
+        .bot-loading .animate-pulse-dot {
+            animation: pulse 1.4s infinite ease-in-out both;
+        }
+        .bot-loading .animate-pulse-dot:nth-child(1) { animation-delay: -0.32s; }
+        .bot-loading .animate-pulse-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes pulse {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
         }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,7 +52,7 @@
                 <div class="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center items-center">
                     <img 
                         src="http://googleusercontent.com/file_content/1" 
-                        alt=""
+                        alt="[Ilustración de un robot amigable en un pasillo con luces de neón cian y magenta]"
                         class="rounded-lg shadow-lg object-cover w-full h-full"
                         onerror="this.onerror=null;this.src='https://placehold.co/600x400/1f283e/ffffff?text=Bienvenido';"
                     />
@@ -73,7 +83,7 @@
             <div class="max-w-7xl mx-auto">
                 <header class="flex flex-col sm:flex-row justify-between items-center mb-8">
                     <h1 class="text-4xl font-brand mb-4 sm:mb-0 text-cyan-400">Innovamind</h1>
-                    <div class="w-full sm:w-auto flex items-center space-x-4">
+                    <div class="w-full sm:w-auto flex items-center space-x-4 relative">
                         <div class="relative flex-grow sm:flex-grow-0">
                             <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400/60 w-5 h-5"></i>
                             <input type="text" placeholder="¿Cómo te podemos ayudar?" class="w-full sm:w-64 lg:w-80 pl-10 pr-4 py-2 bg-cyan-500/10 rounded-lg border border-cyan-500/30 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400"/>
@@ -115,7 +125,7 @@
                 </header>
                 <div class="bg-[#1f283e]/80 p-8 rounded-2xl shadow-lg border border-cyan-500/20">
                     <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-6 mb-10">
-                        <img src="https://placehold.co/128x128/1a1a2e/00e5ff?text=User" alt="" class="w-32 h-32 rounded-full border-4 border-cyan-500/30"/>
+                        <img src="https://placehold.co/128x128/1a1a2e/00e5ff?text=User" alt="[Avatar de usuario]" class="w-32 h-32 rounded-full border-4 border-cyan-500/30"/>
                         <div class="flex-grow">
                             <h2 class="text-3xl font-bold text-cyan-400">Innovador</h2>
                             <p class="text-gray-400">innovador.pro@email.com</p>
@@ -164,7 +174,7 @@
         <div class="p-4 bg-[#1f283e] rounded-t-xl flex justify-between items-center text-cyan-400"><h3 class="font-bold">Innovabot</h3><button id="close-chat-btn" class="hover:text-gray-300"><i data-lucide="x" class="w-6 h-6"></i></button></div>
         <div id="chat-messages" class="flex-grow p-4 overflow-y-auto flex flex-col space-y-3"></div>
         <form id="chat-form" class="p-3 border-t border-cyan-500/20 flex items-center gap-2">
-            <input id="chat-input" type="text" placeholder="Escribe un comando..." class="flex-grow bg-cyan-500/10 p-2 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+            <input id="chat-input" type="text" placeholder="Habla con Innovabot..." class="flex-grow bg-cyan-500/10 p-2 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400">
             <button type="submit" class="bg-cyan-500 text-white p-2 rounded-full hover:bg-cyan-400"><i data-lucide="send" class="w-5 h-5"></i></button>
         </form>
     </div>
@@ -213,6 +223,7 @@
             { title: '¡Nuevo logro!', body: 'Has completado el módulo de Finanzas.', time: 'hace 3 horas' },
             { title: 'Recordatorio de pago', body: 'Tu suscripción se renovará pronto.', time: 'ayer' },
         ];
+        let chatHistory = [];
 
         // --- LÓGICA DE NAVEGACIÓN ---
         function showPage(pageToShow) {
@@ -248,46 +259,117 @@
             notifications.forEach(n => {
                 const item = document.createElement('div');
                 item.className = 'p-3 hover:bg-cyan-500/10 rounded-md cursor-pointer border-b border-cyan-500/10';
-                item.innerHTML = `
-                    <p class="font-semibold text-sm text-cyan-400">${n.title}</p>
-                    <p class="text-xs text-gray-300">${n.body}</p>
-                    <p class="text-xs text-cyan-400/50 text-right mt-1">${n.time}</p>
-                `;
+                item.innerHTML = `<p class="font-semibold text-sm text-cyan-400">${n.title}</p><p class="text-xs text-gray-300">${n.body}</p><p class="text-xs text-cyan-400/50 text-right mt-1">${n.time}</p>`;
                 notificationList.appendChild(item);
             });
         }
 
-        // --- LÓGICA DEL CHATBOT ---
+        // --- LÓGICA DEL CHATBOT CON GEMINI ---
         function addMessageToChat(text, sender) {
             const messageElement = document.createElement('div');
-            messageElement.textContent = text;
-            messageElement.className = sender === 'user' ? 'bg-cyan-500 text-white p-3 rounded-lg self-end max-w-[80%] break-words' : 'bg-gray-600/50 text-gray-200 p-3 rounded-lg self-start max-w-[80%] break-words';
+            if (sender === 'bot-loading') {
+                messageElement.className = 'bg-gray-600/50 text-gray-200 p-3 rounded-lg self-start bot-loading';
+                messageElement.innerHTML = `<div class="flex items-center space-x-2"><div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse-dot"></div><div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse-dot"></div><div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse-dot"></div></div>`;
+            } else {
+                messageElement.textContent = text;
+                messageElement.className = sender === 'user' ? 'bg-cyan-500 text-white p-3 rounded-lg self-end max-w-[80%] break-words' : 'bg-gray-600/50 text-gray-200 p-3 rounded-lg self-start max-w-[80%] break-words';
+            }
             chatMessages.appendChild(messageElement);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-        function processUserCommand(command) {
+
+        async function getGeminiResponse(prompt) {
+            addMessageToChat('', 'bot-loading');
+            const apiKey = ""; // Dejar en blanco para que Canvas lo proporcione
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+            const payload = { contents: chatHistory };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+                const result = await response.json();
+                
+                const loadingElement = document.querySelector('.bot-loading');
+                if (loadingElement) loadingElement.remove();
+
+                if (result.candidates && result.candidates.length > 0) {
+                    const botResponse = result.candidates[0].content.parts[0].text;
+                    addMessageToChat(botResponse, 'bot');
+                    chatHistory.push({ role: "model", parts: [{ text: botResponse }] });
+                } else {
+                    addMessageToChat('Lo siento, no pude procesar tu solicitud en este momento.', 'bot');
+                }
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                const loadingElement = document.querySelector('.bot-loading');
+                if (loadingElement) loadingElement.remove();
+                addMessageToChat('Hubo un error al conectar con mis circuitos. Por favor, intenta de nuevo.', 'bot');
+            }
+        }
+
+        async function processUserCommand(command) {
             const lowerCaseCommand = command.toLowerCase();
-            let botResponse = "No he entendido eso. Intenta con 'perfil', 'panel', 'cerrar sesión' o 'abrir [tema]'.";
+
+            // Comandos locales de navegación
+            const localCommands = {
+                'perfil': { response: "Claro, te llevo a tu perfil.", action: () => showPage(profilePage) },
+                'panel': { response: "Entendido, volviendo al panel principal.", action: () => showPage(dashboardPage) },
+                'inicio': { response: "Entendido, volviendo al panel principal.", action: () => showPage(dashboardPage) },
+                'sesión': { response: "Cerrando sesión. ¡Hasta pronto!", action: () => showPage(loginPage) },
+                'salir': { response: "Cerrando sesión. ¡Hasta pronto!", action: () => showPage(loginPage) },
+                'ayuda': { response: "¡Hola! Soy Innovabot. Puedes hacerme preguntas o usar comandos como 'perfil', 'panel', 'cerrar sesión' o 'abrir [tema]'.", action: () => {} }
+            };
+
             let commandHandled = false;
-            if (lowerCaseCommand.includes('perfil')) { botResponse = "Claro, te llevo a tu perfil."; setTimeout(() => showPage(profilePage), 500); commandHandled = true; }
-            else if (lowerCaseCommand.includes('panel') || lowerCaseCommand.includes('inicio')) { botResponse = "Entendido, volviendo al panel principal."; setTimeout(() => showPage(dashboardPage), 500); commandHandled = true; }
-            else if (lowerCaseCommand.includes('sesión') || lowerCaseCommand.includes('salir')) { botResponse = "Cerrando sesión. ¡Hasta pronto!"; setTimeout(() => showPage(loginPage), 500); commandHandled = true; }
-            else if (lowerCaseCommand.includes('hola') || lowerCaseCommand.includes('ayuda')) { botResponse = "¡Hola! Soy Innovabot. Puedes pedirme que te lleve a tu 'perfil', al 'panel', 'cerrar sesión' o abrir un tema específico como 'abrir marketing'."; commandHandled = true; }
+            for (const key in localCommands) {
+                if (lowerCaseCommand.includes(key)) {
+                    addMessageToChat(localCommands[key].response, 'bot');
+                    setTimeout(localCommands[key].action, 500);
+                    commandHandled = true;
+                    break;
+                }
+            }
+            
             if (!commandHandled) {
                 const foundApp = apps.find(app => lowerCaseCommand.includes(app.id));
-                if (foundApp) { botResponse = `Entendido, abriendo ${foundApp.label}.`; setTimeout(() => showContentPage(foundApp.id), 500); commandHandled = true; }
+                if (foundApp) {
+                    addMessageToChat(`Entendido, abriendo ${foundApp.label}.`, 'bot');
+                    setTimeout(() => showContentPage(foundApp.id), 500);
+                    commandHandled = true;
+                }
             }
-            setTimeout(() => addMessageToChat(botResponse, 'bot'), 300);
+
+            // Si no es un comando local, llamar a Gemini
+            if (!commandHandled) {
+                await getGeminiResponse(command);
+            }
         }
+
         chatBubble.addEventListener('click', () => {
             chatWindow.classList.toggle('hidden');
-            if (!chatWindow.classList.contains('hidden') && chatMessages.children.length === 0) { addMessageToChat("¡Hola! Soy Innovabot. ¿Cómo puedo ayudarte? Escribe 'ayuda' para ver los comandos.", 'bot'); }
+            if (!chatWindow.classList.contains('hidden') && chatMessages.children.length === 0) { 
+                addMessageToChat("¡Hola! Soy Innovabot. ¿En qué puedo ayudarte hoy?", 'bot'); 
+            }
         });
         closeChatBtn.addEventListener('click', () => { chatWindow.classList.add('hidden'); });
-        chatForm.addEventListener('submit', (e) => {
+        
+        chatForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const userInput = chatInput.value.trim();
-            if (userInput) { addMessageToChat(userInput, 'user'); processUserCommand(userInput); chatInput.value = ''; }
+            if (userInput) {
+                addMessageToChat(userInput, 'user');
+                chatInput.value = '';
+                await processUserCommand(userInput);
+            }
         });
 
         // --- RENDERIZADO DINÁMICO ---
@@ -303,11 +385,17 @@
         }
 
         // --- INICIALIZACIÓN ---
-        document.addEventListener('DOMContentLoaded', () => {
+        function initializeApp() {
             renderApps();
             renderNotifications();
             lucide.createIcons();
-        });
+            chatHistory.push(
+                { role: "user", parts: [{ text: "You are Innovabot, a helpful and futuristic assistant for the Innovamind platform. Be concise and helpful. Your answers should be in Spanish." }] },
+                { role: "model", parts: [{ text: "Entendido. Soy Innovabot. ¿Cómo puedo ayudarte a innovar hoy?" }] }
+            );
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeApp);
     </script>
 </body>
 </html>
