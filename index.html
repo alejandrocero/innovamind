@@ -4,593 +4,223 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Innovamind</title>
-    
-    <!-- Tailwind CSS para un diseño rápido y moderno -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts para una tipografía más agradable -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Usamos la fuente Inter que importamos */
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        /* Pequeña transición para los cambios de vista */
-        .view {
-            display: none;
-            animation: fadeIn 0.5s;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        /* Estilos para la ventana de chat */
-        #chat-window {
-            height: 250px;
-            overflow-y: auto;
+        /* Estilo para la fuente del título, similar al de la versión React */
+        .font-brand {
+            font-family: 'Georgia', serif;
         }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-[#6b2f1a] font-sans">
 
-    <!-- BARRA DE NAVEGACIÓN PRINCIPAL -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
-                    <a href="#" onclick="showView('homeView')" class="flex-shrink-0 text-xl font-bold text-blue-600">
-                        Innovamind
-                    </a>
+    <!-- =========== SECCIÓN DE INICIO DE SESIÓN =========== -->
+    <div id="login-page">
+        <div class="min-h-screen flex items-center justify-center p-4">
+            <div class="w-full max-w-6xl mx-auto bg-[#8a4f3a] rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden">
+                <!-- Lado izquierdo: Marca e imagen -->
+                <div class="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center items-center md:items-start text-center md:text-left">
+                    <h1 class="text-white text-6xl sm:text-7xl font-brand mb-8">Innovamind</h1>
+                    <img 
+                        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop" 
+                        alt=""
+                        class="rounded-lg shadow-lg object-cover w-full h-64 md:h-auto"
+                        onerror="this.onerror=null;this.src='https://placehold.co/600x400/8a4f3a/ffffff?text=Equipo+de+Trabajo';"
+                    />
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#" onclick="showView('homeView')" class="text-gray-600 hover:bg-gray-200 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Inicio</a>
-                        <a href="#" onclick="showView('coursesView')" class="text-gray-600 hover:bg-gray-200 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Cursos</a>
-                        
-                        <!-- Botones que cambian según el estado de sesión -->
-                        <a href="#" id="nav-my-profile" onclick="showView('myProfileView')" class="hidden text-gray-600 hover:bg-gray-200 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Mi Perfil</a>
-                        <a href="#" id="nav-register" onclick="showView('registerView')" class="bg-blue-500 text-white hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium">Regístra tu Negocio</a>
-                        <a href="#" id="nav-logout" onclick="logout()" class="hidden bg-red-500 text-white hover:bg-red-600 px-3 py-2 rounded-md text-sm font-medium">Cerrar Sesión</a>
-                    </div>
-                </div>
-                <div class="md:hidden">
-                    <!-- Menú móvil (simplificado por ahora) -->
-                    <button onclick="showView('homeView')" class="text-gray-600 p-2">Inicio</button>
-                </div>
-            </div>
-        </div>
-    </nav>
 
-    <!-- CONTENEDOR PRINCIPAL DE VISTAS -->
-    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-
-        <!-- VISTA 1: INICIO (LISTA DE NEGOCIOS) -->
-        <div id="homeView" class="view">
-            <h1 class="text-3xl font-bold mb-6 px-4">Negocios Locales</h1>
-            <div id="business-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
-                <!-- Las tarjetas de negocios se insertarán aquí con JavaScript -->
-            </div>
-        </div>
-
-        <!-- VISTA 2: REGISTRO DE NEGOCIO -->
-        <div id="registerView" class="view">
-            <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
-                <h2 class="text-2xl font-bold mb-6 text-center">Crea tu cuenta</h2>
-                <form id="register-form">
-                    <div class="mb-4">
-                        <label for="business-name" class="block text-sm font-medium text-gray-700">Nombre del Negocio</label>
-                        <input type="text" id="business-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="business-email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
-                        <input type="email" id="business-email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-                    </div>
-                    <div class="mb-6">
-                        <label for="business-password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-                        <input type="password" id="business-password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-                    </div>
-                    <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 font-semibold">Registrarse</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- VISTA 3: PERFIL PÚBLICO DE UN NEGOCIO -->
-        <div id="sellerProfileView" class="view">
-            <!-- El contenido se genera dinámicamente con JS -->
-        </div>
-
-        <!-- VISTA 4: MI PERFIL (EDITABLE) -->
-        <div id="myProfileView" class="view">
-             <div class="bg-white p-8 rounded-lg shadow-lg">
-                <h2 class="text-3xl font-bold mb-2">Mi Perfil</h2>
-                <p class="mb-6 text-gray-500">Aquí puedes editar la información de tu negocio y gestionar tu catálogo.</p>
-                
-                <!-- Formulario para editar perfil -->
-                <form id="edit-profile-form" class="mb-8 border-b pb-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Lado derecho: Formulario de inicio de sesión -->
+                <div class="w-full md:w-1/2 p-8 sm:p-12 bg-[#6b2f1a] flex flex-col justify-center">
+                    <h2 class="text-3xl font-bold text-white mb-8 text-center">INICIAR SESIÓN</h2>
+                    <div class="space-y-6">
                         <div>
-                           <label for="edit-business-name" class="block text-sm font-medium text-gray-700">Nombre del Negocio</label>
-                           <input type="text" id="edit-business-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                            <label class="text-sm font-light text-white/80" for="username">Usuario</label>
+                            <input id="username" type="text" placeholder="Escribe tu nombre de usuario" class="w-full mt-2 p-3 bg-white/10 rounded-lg border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"/>
                         </div>
                         <div>
-                           <label for="edit-business-phone" class="block text-sm font-medium text-gray-700">Teléfono (WhatsApp)</label>
-                           <input type="tel" id="edit-business-phone" placeholder="Ej: 5216641234567" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                            <label class="text-sm font-light text-white/80" for="password">Contraseña</label>
+                            <input id="password" type="password" placeholder="Escribe tu contraseña" class="w-full mt-2 p-3 bg-white/10 rounded-lg border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"/>
                         </div>
                     </div>
-                    <div class="mt-4">
-                        <label for="edit-business-description" class="block text-sm font-medium text-gray-700">Descripción del Negocio</label>
-                        <textarea id="edit-business-description" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"></textarea>
-                    </div>
-                    <div class="mt-6">
-                        <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 font-semibold">Guardar Cambios</button>
-                    </div>
-                </form>
-
-                <!-- Sección de Catálogo -->
-                <h3 class="text-2xl font-bold mt-8 mb-4">Mi Catálogo</h3>
-                <div id="my-catalog-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8">
-                    <!-- Productos del usuario -->
-                </div>
-
-                <!-- Formulario para añadir nuevo producto -->
-                <div class="bg-gray-50 p-6 rounded-lg">
-                    <h4 class="text-xl font-bold mb-4">Añadir Nuevo Producto</h4>
-                    <form id="add-product-form">
-                        <div class="mb-4">
-                            <label for="product-name" class="block text-sm font-medium text-gray-700">Nombre del Producto</label>
-                            <input type="text" id="product-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="product-price" class="block text-sm font-medium text-gray-700">Precio (MXN)</label>
-                            <input type="number" id="product-price" step="0.01" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="product-image" class="block text-sm font-medium text-gray-700">URL de la Imagen</label>
-                            <input type="url" id="product-image" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="https://ejemplo.com/imagen.jpg">
-                        </div>
-                        <button type="submit" class="w-full md:w-auto bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 font-semibold">Añadir Producto</button>
-                    </form>
-                </div>
-             </div>
-        </div>
-        
-        <!-- VISTA 5: CURSOS -->
-        <div id="coursesView" class="view">
-            <div class="px-4">
-                <h1 class="text-3xl font-bold mb-6">Cursos para Emprendedores</h1>
-                <div id="course-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Las tarjetas de cursos se insertarán aquí -->
+                    <button id="login-btn" class="w-full mt-10 p-4 bg-white text-[#6b2f1a] font-bold rounded-lg hover:bg-gray-200 transition-colors duration-300 text-lg">
+                        Entrar
+                    </button>
                 </div>
             </div>
-        </div>
-
-    </main>
-
-    <!-- PIE DE PÁGINA CON DISCLAIMER -->
-    <footer class="bg-gray-200 text-center py-4 mt-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs text-gray-600">
-            <p><strong class="font-bold">Aviso Legal:</strong> Este es un prototipo con fines de demostración. La información, los productos y los negocios mostrados son ficticios. No se procesan transacciones reales.</p>
-            <p class="mt-1">&copy; 2024 Innovamind. Todos los derechos reservados (simulado).</p>
-        </div>
-    </footer>
-    
-    <!-- MASCOTA Y CHATBOT -->
-    <div id="mascot-button" class="fixed bottom-5 right-5 bg-blue-600 p-3 rounded-full shadow-lg cursor-pointer hover:bg-blue-700 transition-transform transform hover:scale-110 z-50">
-        <!-- Icono de robot SVG -->
-        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V4m0 16v-2M8 8l1.414-1.414M14.586 14.586L16 16m-1.414-8.586L16 6m-8.586 8.586L6 16M12 18a6 6 0 100-12 6 6 0 000 12z"></path></svg>
-    </div>
-
-    <div id="chatbot-modal" class="hidden fixed bottom-20 right-5 bg-white w-80 rounded-lg shadow-xl border border-gray-200 flex flex-col z-40">
-        <div class="p-3 bg-blue-600 text-white rounded-t-lg flex justify-between items-center">
-            <h4 class="font-bold">InnovaBot</h4>
-            <button id="close-chatbot-modal" class="text-white font-bold text-xl">&times;</button>
-        </div>
-        <div id="chat-window" class="p-4 flex-grow">
-            <!-- Los mensajes del chat se insertarán aquí -->
-        </div>
-        <div class="p-2 border-t">
-            <form id="chat-form" class="flex">
-                <input type="text" id="chat-input" class="flex-grow border rounded-l-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Escribe 'ayuda'...">
-                <button type="submit" class="bg-blue-600 text-white px-4 rounded-r-md hover:bg-blue-700 font-semibold text-sm">Enviar</button>
-            </form>
         </div>
     </div>
 
+    <!-- =========== SECCIÓN DEL PANEL PRINCIPAL (DASHBOARD) =========== -->
+    <div id="dashboard-page" class="hidden">
+        <div class="min-h-screen text-white p-4 sm:p-6 lg:p-8">
+            <div class="max-w-7xl mx-auto">
+                <!-- Cabecera -->
+                <header class="flex flex-col sm:flex-row justify-between items-center mb-8">
+                    <h1 class="text-4xl font-brand mb-4 sm:mb-0">Innovamind</h1>
+                    <div class="w-full sm:w-auto flex items-center space-x-4">
+                        <div class="relative flex-grow sm:flex-grow-0">
+                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-white/60 w-5 h-5"></i>
+                            <input type="text" placeholder="¿Cómo te podemos ayudar?" class="w-full sm:w-64 lg:w-80 pl-10 pr-4 py-2 bg-white/10 rounded-lg border border-white/20 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50"/>
+                        </div>
+                        <button class="p-2 rounded-full hover:bg-white/20 transition-colors"><i data-lucide="bell" class="w-5 h-5"></i></button>
+                        <button id="profile-btn" class="p-2 rounded-full hover:bg-white/20 transition-colors" title="Ver Perfil"><i data-lucide="user-circle" class="w-5 h-5"></i></button>
+                        <button class="logout-btn p-2 rounded-full hover:bg-white/20 transition-colors" title="Cerrar Sesión"><i data-lucide="log-out" class="w-5 h-5"></i></button>
+                    </div>
+                </header>
+
+                <!-- Mensaje de bienvenida -->
+                <div class="mb-12">
+                    <h2 class="text-4xl font-light">¡Hola <span class="font-semibold">Innovador</span>!</h2>
+                    <p class="text-xl text-white/80">Bienvenido(a) a tu espacio</p>
+                </div>
+
+                <!-- Sección de Apps -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-6">Apps</h3>
+                    <div id="app-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+                        <!-- Los iconos de las apps se insertarán aquí con JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========== SECCIÓN DE PERFIL =========== -->
+    <div id="profile-page" class="hidden">
+        <div class="min-h-screen text-white p-4 sm:p-6 lg:p-8">
+            <div class="max-w-4xl mx-auto">
+                <header class="flex items-center justify-between mb-10">
+                    <button class="back-to-dashboard-btn flex items-center gap-2 text-white/80 hover:text-white transition-colors">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                        Volver al Panel
+                    </button>
+                    <h1 class="text-3xl font-brand">Perfil y Configuración</h1>
+                    <div class="w-24"></div> <!-- Espaciador -->
+                </header>
+
+                <div class="bg-[#8a4f3a]/50 p-8 rounded-2xl shadow-lg">
+                    <!-- Cabecera del perfil -->
+                    <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-6 mb-10">
+                        <img src="https://placehold.co/128x128/ffffff/6b2f1a?text=User" alt="" class="w-32 h-32 rounded-full border-4 border-white/20"/>
+                        <div class="flex-grow">
+                            <h2 class="text-3xl font-bold">Innovador</h2>
+                            <p class="text-white/70">innovador.pro@email.com</p>
+                            <button class="mt-4 px-4 py-2 text-sm bg-white/10 border border-white/20 rounded-lg hover:bg-white/20 transition-colors">Cambiar foto</button>
+                        </div>
+                    </div>
+
+                    <!-- Campos del formulario -->
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4 border-b border-white/20 pb-2">Información Personal</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="text-sm font-light text-white/80" for="fullName">Nombre Completo</label>
+                                    <input id="fullName" type="text" value="Innovador Pro" class="w-full mt-2 p-3 bg-white/10 rounded-lg border border-white/20 text-white"/>
+                                </div>
+                                <div>
+                                    <label class="text-sm font-light text-white/80" for="email">Correo Electrónico</label>
+                                    <input id="email" type="email" value="innovador.pro@email.com" class="w-full mt-2 p-3 bg-white/10 rounded-lg border border-white/20 text-white"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4 border-b border-white/20 pb-2">Seguridad</h3>
+                            <div class="space-y-4">
+                               <button class="flex items-center gap-3 w-full text-left p-3 rounded-lg hover:bg-white/10 transition-colors"><i data-lucide="key-round" class="text-white/70"></i><span>Cambiar Contraseña</span></button>
+                               <button class="flex items-center gap-3 w-full text-left p-3 rounded-lg hover:bg-white/10 transition-colors"><i data-lucide="bell" class="text-white/70"></i><span>Gestionar Notificaciones</span></button>
+                               <button class="flex items-center gap-3 w-full text-left p-3 rounded-lg hover:bg-white/10 transition-colors"><i data-lucide="palette" class="text-white/70"></i><span>Apariencia y Tema</span></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div class="flex flex-col sm:flex-row items-center justify-between mt-12 pt-8 border-t border-white/20">
+                        <button class="logout-btn w-full sm:w-auto text-center px-6 py-3 text-red-400 hover:bg-red-500/20 rounded-lg transition-colors order-2 sm:order-1 mt-4 sm:mt-0">Cerrar Sesión</button>
+                        <button class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-white text-[#6b2f1a] font-bold rounded-lg hover:bg-gray-200 transition-colors order-1 sm:order-2"><i data-lucide="save" class="w-5 h-5"></i>Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // --- SIMULACIÓN DE BASE DE DATOS Y ESTADO DE LA APP ---
+        // --- ELEMENTOS DEL DOM ---
+        const loginPage = document.getElementById('login-page');
+        const dashboardPage = document.getElementById('dashboard-page');
+        const profilePage = document.getElementById('profile-page');
+        const appGrid = document.getElementById('app-grid');
 
-        // Datos de ejemplo para los negocios
-        let businesses = [
-            {
-                id: 1,
-                name: 'Frutería "La Cosecha"',
-                email: 'fruteria@test.com',
-                password: '123',
-                description: 'Las frutas y verduras más frescas de la región, directo del campo a tu mesa.',
-                phone: '5216641112233',
-                coverImage: 'https://images.unsplash.com/photo-1518843875459-f738682238a6?q=80&w=400&auto=format&fit=crop',
-                catalog: [
-                    { id: 101, name: 'Kilo de Manzana Gala', price: 45.50, image: 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?q=80&w=400&auto=format&fit=crop' },
-                    { id: 102, name: 'Kilo de Plátano', price: 25.00, image: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?q=80&w=400&auto=format&fit=crop' },
-                    { id: 103, name: 'Canasta de Verduras', price: 150.00, image: 'https://images.unsplash.com/photo-1518843875459-f738682238a6?q=80&w=400&auto=format&fit=crop' }
-                ]
-            },
-            {
-                id: 2,
-                name: 'Artesanías "Corazón Mexicano"',
-                email: 'artesanias@test.com',
-                password: '123',
-                description: 'Piezas únicas hechas a mano por artesanos locales. Alebrijes, textiles y cerámica de alta calidad.',
-                phone: '5215554443322',
-                coverImage: 'https://viajaxcancun.wordpress.com/wp-content/uploads/2015/03/artesanc3adas-playa-del-carmen-i.jpg?q=80&w=400&auto=format&fit=crop',
-                catalog: [
-                    { id: 201, name: 'Alebrije de Colores', price: 850.00, image: 'https://www.cenotexunaan.com/wp-content/uploads/2023/12/IMG_1437-scaled.jpg?q=80&w=400&auto=format&fit=crop' },
-                    { id: 202, name: 'Jarrón de Talavera', price: 1200.00, image: 'https://ss157.liverpool.com.mx/xl/1126558411.jpg?q=80&w=400&auto=format&fit=crop' }
-                ]
-            },
-            {
-                id: 3,
-                name: 'Panadería "El Trigo de Oro"',
-                email: 'panaderia@test.com',
-                password: '123',
-                description: 'Pan artesanal horneado diariamente. Prueba nuestras conchas, bolillos y pasteles.',
-                phone: '5213334445566',
-                coverImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRRwS450qB0MUgqwQeB_ndWQU1qG33G8lIqw&?q=80&w=400&auto=format&fit=crop',
-                catalog: [
-                    { id: 301, name: 'Concha de Vainilla', price: 15.00, image: 'https://i5.walmartimages.com.mx/gr/images/product-images/img_large/00020010100000L3.jpg?q=80&w=400&auto=format&fit=crop' },
-                    { id: 302, name: 'Pastel de Chocolate', price: 350.00, image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=400&auto=format&fit=crop' },
-                    { id: 303, name: 'Bolillo Fresco (5 pz)', price: 10.00, image: 'https://www.eluniversal.com.mx/resizer/v2/VF7AMRE3GZBI7DUVENVNOR32ZQ.jpg?q=80&w=400&auto=format&fit=crop' }
-                ]
-            }
-        ];
-        
-        // Datos de ejemplo para los cursos
-        const courses = [
-            {
-                id: 1,
-                title: 'Administración para Pequeños Negocios',
-                category: 'Administración',
-                instructor: 'Ana Gómez',
-                description: 'Aprende los fundamentos para administrar tu negocio eficientemente, desde inventarios hasta gestión de personal.',
-                image: 'https://placehold.co/600x400/60a5fa/FFFFFF?text=Administración'
-            },
-            {
-                id: 2,
-                title: 'Finanzas para No Financieros',
-                category: 'Finanzas',
-                instructor: 'Carlos Mendoza',
-                description: 'Entiende los números de tu empresa. Aprende sobre flujo de caja, presupuestos y cómo tomar decisiones financieras inteligentes.',
-                image: 'https://placehold.co/600x400/34d399/FFFFFF?text=Finanzas'
-            },
-            {
-                id: 3,
-                title: 'Marketing Digital en Redes Sociales',
-                category: 'Marketing',
-                instructor: 'Sofía Castillo',
-                description: 'Descubre cómo usar Facebook, Instagram y WhatsApp para atraer más clientes y aumentar tus ventas.',
-                image: 'https://placehold.co/600x400/fbbf24/FFFFFF?text=Marketing'
-            },
-            {
-                id: 4,
-                title: 'Optimización de Procesos y Operaciones',
-                category: 'Administración',
-                instructor: 'Ana Gómez',
-                description: 'Haz más con menos. Mejora la eficiencia de tus operaciones diarias para reducir costos y mejorar la calidad.',
-                image: 'https://placehold.co/600x400/818cf8/FFFFFF?text=Procesos'
-            },
-            {
-                id: 5,
-                title: 'Estrategias de Precios para tus Productos',
-                category: 'Finanzas',
-                instructor: 'Carlos Mendoza',
-                description: 'Define precios competitivos que maximicen tus ganancias y atraigan a tus clientes ideales.',
-                image: 'https://placehold.co/600x400/f87171/FFFFFF?text=Precios'
-            },
-            {
-                id: 6,
-                title: 'Crea tu Marca desde Cero',
-                category: 'Marketing',
-                instructor: 'Sofía Castillo',
-                description: 'Construye una identidad de marca sólida y memorable que conecte emocionalmente con tu público.',
-                image: 'https://placehold.co/600x400/f472b6/FFFFFF?text=Branding'
-            }
+        const loginBtn = document.getElementById('login-btn');
+        const profileBtn = document.getElementById('profile-btn');
+        const logoutBtns = document.querySelectorAll('.logout-btn');
+        const backToDashboardBtns = document.querySelectorAll('.back-to-dashboard-btn');
+
+        // --- DATOS DE LAS APPS ---
+        const apps = [
+            { icon: 'lightbulb', label: 'Innovación y Tecnología' },
+            { icon: 'wrench', label: 'Herramientas y Sistemas' },
+            { icon: 'area-chart', label: 'Análisis de mercado' },
+            { icon: 'megaphone', label: 'Marketing y Ventas' },
+            { icon: 'users', label: 'Mentoría y Asesoramiento' },
+            { icon: 'network', label: 'Networking' },
+            { icon: 'landmark', label: 'Finanzas y Contabilidad' },
+            { icon: 'shield-check', label: 'Gestión de la Calidad' },
         ];
 
-        // Variable para guardar el usuario que ha iniciado sesión
-        let currentUser = null;
-
-        // --- LÓGICA DE NAVEGACIÓN Y VISTAS ---
-
-        const views = document.querySelectorAll('.view');
-        
-        function showView(viewId) {
-            views.forEach(view => {
-                if (view.id === viewId) {
-                    view.style.display = 'block';
-                } else {
-                    view.style.display = 'none';
-                }
-            });
-            // Lógica específica al mostrar una vista
-            if (viewId === 'homeView') renderBusinessList();
-            if (viewId === 'myProfileView' && currentUser) renderMyProfile();
-            if (viewId === 'coursesView') renderCourses();
+        // --- LÓGICA DE NAVEGACIÓN ---
+        function showPage(pageToShow) {
+            loginPage.classList.add('hidden');
+            dashboardPage.classList.add('hidden');
+            profilePage.classList.add('hidden');
+            pageToShow.classList.remove('hidden');
         }
 
-        // --- RENDERIZADO DE CONTENIDO DINÁMICO ---
+        loginBtn.addEventListener('click', () => {
+            showPage(dashboardPage);
+        });
 
-        function renderBusinessList() {
-            const listContainer = document.getElementById('business-list');
-            listContainer.innerHTML = ''; // Limpiar lista
-            businesses.forEach(business => {
-                const card = `
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="showSellerProfile(${business.id})">
-                        <img src="${business.coverImage || 'https://placehold.co/400x300/e0e0e0/333333?text=Negocio'}" alt="Imagen de ${business.name}" class="w-full h-32 object-cover">
-                        <div class="p-3">
-                            <h3 class="text-md font-bold truncate">${business.name}</h3>
-                            <p class="text-gray-500 text-xs mt-1 truncate">${business.description}</p>
-                            <button class="mt-3 w-full bg-blue-500 text-white py-1.5 rounded-md hover:bg-blue-600 text-xs font-semibold">Ver Perfil</button>
-                        </div>
-                    </div>
+        profileBtn.addEventListener('click', () => {
+            showPage(profilePage);
+        });
+
+        logoutBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                showPage(loginPage);
+            });
+        });
+
+        backToDashboardBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                showPage(dashboardPage);
+            });
+        });
+        
+        // --- RENDERIZADO DINÁMICO ---
+        // Función para renderizar los iconos de las apps en el panel principal
+        function renderApps() {
+            appGrid.innerHTML = ''; // Limpiar el grid antes de renderizar
+            apps.forEach(app => {
+                const appElement = document.createElement('div');
+                appElement.className = 'flex flex-col items-center justify-center text-center p-4 bg-[#6b4f44]/50 rounded-lg shadow-md hover:bg-[#6b4f44]/80 transition-all duration-300 cursor-pointer aspect-square';
+                appElement.innerHTML = `
+                    <i data-lucide="${app.icon}" class="w-10 h-10 sm:w-12 sm:h-12 mb-3 text-white"></i>
+                    <span class="text-white text-xs sm:text-sm font-light">${app.label}</span>
                 `;
-                listContainer.innerHTML += card;
-            });
-        }
-        
-        function renderCourses() {
-            const listContainer = document.getElementById('course-list');
-            listContainer.innerHTML = ''; // Limpiar lista
-            courses.forEach(course => {
-                const card = `
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
-                        <img src="${course.image}" alt="Imagen del curso ${course.title}" class="w-full h-40 object-cover">
-                        <div class="p-4 flex flex-col flex-grow">
-                            <span class="text-xs font-semibold text-blue-600 bg-blue-100 py-1 px-2 rounded-full self-start">${course.category}</span>
-                            <h3 class="text-lg font-bold mt-2">${course.title}</h3>
-                            <p class="text-gray-600 text-sm mt-1 flex-grow">${course.description}</p>
-                            <p class="text-xs text-gray-500 mt-2">Por: ${course.instructor}</p>
-                            <button class="mt-4 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 font-semibold">Ver más</button>
-                        </div>
-                    </div>
-                `;
-                listContainer.innerHTML += card;
+                appGrid.appendChild(appElement);
             });
         }
 
-        function showSellerProfile(businessId) {
-            const business = businesses.find(b => b.id === businessId);
-            if (!business) return;
-
-            const profileContainer = document.getElementById('sellerProfileView');
-            let catalogHTML = '';
-            business.catalog.forEach(item => {
-                catalogHTML += `
-                    <div class="border rounded-lg p-2 bg-white">
-                        <img src="${item.image || 'https://placehold.co/400x300/e0e0e0/333333?text=Producto'}" alt="${item.name}" class="w-full h-24 object-cover rounded-md mb-2">
-                        <h4 class="font-bold text-sm truncate">${item.name}</h4>
-                        <p class="text-green-600 font-semibold text-md">$${item.price.toFixed(2)}</p>
-                    </div>
-                `;
-            });
-            
-            const whatsappLink = `https://wa.me/${business.phone}?text=Hola,%20me%20interesan%20tus%20productos.`;
-
-            profileContainer.innerHTML = `
-                <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
-                    <button onclick="showView('homeView')" class="mb-4 text-blue-600 hover:underline">&larr; Volver a la lista</button>
-                    <h2 class="text-4xl font-extrabold mb-2">${business.name}</h2>
-                    <p class="text-gray-600 mb-6">${business.description}</p>
-                    <a href="${whatsappLink}" target="_blank" class="inline-block bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors">
-                        Contactar por WhatsApp
-                    </a>
-                    
-                    <h3 class="text-2xl font-bold mt-10 mb-4 border-t pt-6">Catálogo de Productos</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        ${catalogHTML || '<p>Este negocio aún no tiene productos en su catálogo.</p>'}
-                    </div>
-                </div>
-            `;
-            showView('sellerProfileView');
-        }
-
-        function renderMyProfile() {
-            if (!currentUser) return;
-            // Rellenar formulario de edición
-            document.getElementById('edit-business-name').value = currentUser.name;
-            document.getElementById('edit-business-phone').value = currentUser.phone || '';
-            document.getElementById('edit-business-description').value = currentUser.description || '';
-            
-            // Renderizar catálogo personal
-            const myCatalogContainer = document.getElementById('my-catalog-list');
-            myCatalogContainer.innerHTML = '';
-            currentUser.catalog.forEach(item => {
-                const productCard = `
-                    <div class="border rounded-lg p-2 bg-white relative">
-                        <img src="${item.image || 'https://placehold.co/400x300/e0e0e0/333333?text=Producto'}" class="w-full h-24 object-cover rounded-md mb-2">
-                        <h4 class="font-bold text-sm truncate">${item.name}</h4>
-                        <p class="text-green-600 font-semibold text-md">$${item.price.toFixed(2)}</p>
-                        <button onclick="removeProduct(${item.id})" class="absolute top-1 right-1 bg-red-500 text-white w-6 h-6 rounded-full hover:bg-red-600 flex items-center justify-center text-xs">&times;</button>
-                    </div>
-                `;
-                myCatalogContainer.innerHTML += productCard;
-            });
-        }
-
-        // --- MANEJO DE FORMULARIOS Y EVENTOS ---
-
-        document.getElementById('register-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('business-name').value;
-            const email = document.getElementById('business-email').value;
-            const password = document.getElementById('business-password').value;
-            
-            const newBusiness = {
-                id: Date.now(), // ID único simple
-                name,
-                email,
-                password,
-                description: '¡Bienvenido! Edita tu descripción desde la sección "Mi Perfil".',
-                phone: '',
-                coverImage: 'https://placehold.co/400x300/cccccc/ffffff?text=Tu+Negocio',
-                catalog: []
-            };
-            
-            businesses.push(newBusiness);
-            currentUser = newBusiness;
-            
-            this.reset();
-            updateUI();
-            showView('myProfileView');
+        // --- INICIALIZACIÓN ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderApps();
+            // Inicializar los iconos de Lucide en todo el documento
+            lucide.createIcons();
         });
-
-        document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            if(!currentUser) return;
-            currentUser.name = document.getElementById('edit-business-name').value;
-            currentUser.phone = document.getElementById('edit-business-phone').value;
-            currentUser.description = document.getElementById('edit-business-description').value;
-            alert('Perfil actualizado con éxito!');
-            renderBusinessList(); // Actualizar la lista por si cambió el nombre o descripción
-        });
-        
-        document.getElementById('add-product-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            if(!currentUser) return;
-            
-            const newProduct = {
-                id: Date.now(),
-                name: document.getElementById('product-name').value,
-                price: parseFloat(document.getElementById('product-price').value),
-                image: document.getElementById('product-image').value
-            };
-            
-            currentUser.catalog.push(newProduct);
-            this.reset();
-            renderMyProfile(); // Actualizar la vista del catálogo
-        });
-
-        function removeProduct(productId) {
-            if(!currentUser) return;
-            const confirmation = confirm('¿Estás seguro de que quieres eliminar este producto?');
-            if (confirmation) {
-                currentUser.catalog = currentUser.catalog.filter(p => p.id !== productId);
-                renderMyProfile();
-            }
-        }
-
-        // --- LÓGICA DE AUTENTICACIÓN (SIMULADA) ---
-
-        function updateUI() {
-            const navMyProfile = document.getElementById('nav-my-profile');
-            const navRegister = document.getElementById('nav-register');
-            const navLogout = document.getElementById('nav-logout');
-
-            if (currentUser) {
-                navMyProfile.style.display = 'block';
-                navLogout.style.display = 'block';
-                navRegister.style.display = 'none';
-            } else {
-                navMyProfile.style.display = 'none';
-                navLogout.style.display = 'none';
-                navRegister.style.display = 'block';
-            }
-        }
-        
-        function logout() {
-            currentUser = null;
-            updateUI();
-            showView('homeView');
-        }
-
-        // --- LÓGICA DEL CHATBOT ---
-        const mascotButton = document.getElementById('mascot-button');
-        const chatbotModal = document.getElementById('chatbot-modal');
-        const closeChatbotModal = document.getElementById('close-chatbot-modal');
-        const chatWindow = document.getElementById('chat-window');
-        const chatForm = document.getElementById('chat-form');
-        const chatInput = document.getElementById('chat-input');
-
-        mascotButton.addEventListener('click', () => {
-            chatbotModal.classList.toggle('hidden');
-            if (!chatbotModal.classList.contains('hidden') && chatWindow.children.length === 0) {
-                 setTimeout(() => {
-                    addMessageToChat('¡Hola! Soy InnovaBot. ¿En qué puedo ayudarte? Escribe "ayuda" para ver una lista de comandos.', 'bot');
-                }, 300);
-            }
-        });
-
-        closeChatbotModal.addEventListener('click', () => {
-            chatbotModal.classList.add('hidden');
-        });
-        
-        chatForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const userMessage = chatInput.value.trim();
-            if (userMessage) {
-                addMessageToChat(userMessage, 'user');
-                handleBotResponse(userMessage);
-                chatInput.value = '';
-            }
-        });
-
-        function addMessageToChat(message, sender) {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('mb-2', 'p-2', 'rounded-lg', 'text-sm', 'max-w-xs');
-            messageElement.textContent = message;
-
-            if (sender === 'user') {
-                messageElement.classList.add('bg-blue-500', 'text-white', 'self-end', 'ml-auto');
-            } else {
-                messageElement.classList.add('bg-gray-200', 'text-gray-800', 'self-start', 'mr-auto');
-            }
-            chatWindow.appendChild(messageElement);
-            chatWindow.scrollTop = chatWindow.scrollHeight; // Auto-scroll
-        }
-        
-        function handleBotResponse(message) {
-            const lowerCaseMessage = message.toLowerCase();
-            let botReply = '';
-
-            setTimeout(() => {
-                if (lowerCaseMessage.includes('hola') || lowerCaseMessage.includes('saludos')) {
-                    botReply = '¡Hola! ¿Cómo puedo ayudarte hoy?';
-                } else if (lowerCaseMessage.includes('ayuda')) {
-                    botReply = 'Puedo ayudarte con lo siguiente:\n- Ver "cursos"\n- Ir al "inicio"\n- "Registrar" un negocio\n- Ir a "mi perfil"';
-                } else if (lowerCaseMessage.includes('curso')) {
-                    botReply = '¡Claro! Te llevo a la sección de cursos para que sigas aprendiendo.';
-                    showView('coursesView');
-                } else if (lowerCaseMessage.includes('inicio') || lowerCaseMessage.includes('negocio')) {
-                    botReply = 'Mostrando todos los negocios locales.';
-                    showView('homeView');
-                } else if (lowerCaseMessage.includes('registrar') || lowerCaseMessage.includes('vender')) {
-                    botReply = '¡Genial! Para empezar a vender, solo necesitas crear una cuenta. Te llevo a la página de registro.';
-                    showView('registerView');
-                } else if (lowerCaseMessage.includes('perfil')) {
-                     if(currentUser) {
-                        botReply = 'Entendido, te llevo a tu perfil para que puedas gestionarlo.';
-                        showView('myProfileView');
-                     } else {
-                        botReply = 'Para ver tu perfil, primero necesitas registrarte o iniciar sesión.';
-                        showView('registerView');
-                     }
-                } else {
-                    botReply = "No estoy seguro de entender. Intenta escribir 'ayuda' para ver las opciones que conozco.";
-                }
-                addMessageToChat(botReply, 'bot');
-            }, 500);
-        }
-
-
-        // --- INICIALIZACIÓN DE LA APP ---
-        
-        window.onload = () => {
-            updateUI();
-            showView('homeView');
-        };
 
     </script>
 </body>
