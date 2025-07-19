@@ -9,45 +9,57 @@
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Estilo para la fuente del título, similar al de la versión React */
+        /* Estilo para una fuente más moderna */
+        body {
+            font-family: 'Inter', sans-serif; /* Puedes importar Inter desde Google Fonts si lo deseas */
+        }
         .font-brand {
-            font-family: 'Georgia', serif;
+            font-family: 'Orbitron', sans-serif; /* Una fuente futurista */
         }
         /* Para ocultar la barra de desplazamiento en el chat pero mantener la funcionalidad */
         #chat-messages::-webkit-scrollbar {
             width: 0;
             height: 0;
         }
+        /* Efecto de brillo sutil */
+        .neon-glow-cyan {
+            box-shadow: 0 0 5px rgba(0, 229, 255, 0.5), 0 0 10px rgba(0, 229, 255, 0.3);
+        }
+        .neon-glow-pink {
+            box-shadow: 0 0 5px rgba(255, 0, 255, 0.5), 0 0 10px rgba(255, 0, 255, 0.3);
+        }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-[#6b2f1a] font-sans">
+<body class="bg-[#1a1a2e] font-sans text-gray-200">
 
     <!-- =========== SECCIÓN DE INICIO DE SESIÓN =========== -->
     <div id="login-page">
         <div class="min-h-screen flex items-center justify-center p-4">
-            <div class="w-full max-w-6xl mx-auto bg-[#8a4f3a] rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden">
-                <div class="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center items-center md:items-start text-center md:text-left">
-                    <h1 class="text-white text-6xl sm:text-7xl font-brand mb-8">Innovamind</h1>
+            <div class="w-full max-w-6xl mx-auto bg-[#1f283e] rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden border border-cyan-500/20">
+                <div class="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center items-center">
                     <img 
-                        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop" 
+                        src="http://googleusercontent.com/file_content/1" 
                         alt=""
-                        class="rounded-lg shadow-lg object-cover w-full h-64 md:h-auto"
-                        onerror="this.onerror=null;this.src='https://placehold.co/600x400/8a4f3a/ffffff?text=Equipo+de+Trabajo';"
+                        class="rounded-lg shadow-lg object-cover w-full h-full"
+                        onerror="this.onerror=null;this.src='https://placehold.co/600x400/1f283e/ffffff?text=Bienvenido';"
                     />
                 </div>
-                <div class="w-full md:w-1/2 p-8 sm:p-12 bg-[#6b2f1a] flex flex-col justify-center">
-                    <h2 class="text-3xl font-bold text-white mb-8 text-center">INICIAR SESIÓN</h2>
+                <div class="w-full md:w-1/2 p-8 sm:p-12 bg-[#1a1a2e] flex flex-col justify-center">
+                    <h2 class="text-3xl font-bold text-white mb-8 text-center font-brand">INICIAR SESIÓN</h2>
                     <div class="space-y-6">
                         <div>
-                            <label class="text-sm font-light text-white/80" for="username">Usuario</label>
-                            <input id="username" type="text" placeholder="Escribe tu nombre de usuario" class="w-full mt-2 p-3 bg-white/10 rounded-lg border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"/>
+                            <label class="text-sm font-light text-cyan-400" for="username">Usuario</label>
+                            <input id="username" type="text" placeholder="Escribe tu nombre de usuario" class="w-full mt-2 p-3 bg-cyan-500/10 rounded-lg border border-cyan-500/30 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"/>
                         </div>
                         <div>
-                            <label class="text-sm font-light text-white/80" for="password">Contraseña</label>
-                            <input id="password" type="password" placeholder="Escribe tu contraseña" class="w-full mt-2 p-3 bg-white/10 rounded-lg border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"/>
+                            <label class="text-sm font-light text-cyan-400" for="password">Contraseña</label>
+                            <input id="password" type="password" placeholder="Escribe tu contraseña" class="w-full mt-2 p-3 bg-cyan-500/10 rounded-lg border border-cyan-500/30 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"/>
                         </div>
                     </div>
-                    <button id="login-btn" class="w-full mt-10 p-4 bg-white text-[#6b2f1a] font-bold rounded-lg hover:bg-gray-200 transition-colors duration-300 text-lg">
+                    <button id="login-btn" class="w-full mt-10 p-4 bg-cyan-500 text-white font-bold rounded-lg hover:bg-cyan-400 transition-colors duration-300 text-lg neon-glow-cyan">
                         Entrar
                     </button>
                 </div>
@@ -60,37 +72,32 @@
         <div class="min-h-screen text-white p-4 sm:p-6 lg:p-8">
             <div class="max-w-7xl mx-auto">
                 <header class="flex flex-col sm:flex-row justify-between items-center mb-8">
-                    <h1 class="text-4xl font-brand mb-4 sm:mb-0">Innovamind</h1>
+                    <h1 class="text-4xl font-brand mb-4 sm:mb-0 text-cyan-400">Innovamind</h1>
                     <div class="w-full sm:w-auto flex items-center space-x-4">
                         <div class="relative flex-grow sm:flex-grow-0">
-                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-white/60 w-5 h-5"></i>
-                            <input type="text" placeholder="¿Cómo te podemos ayudar?" class="w-full sm:w-64 lg:w-80 pl-10 pr-4 py-2 bg-white/10 rounded-lg border border-white/20 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50"/>
+                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400/60 w-5 h-5"></i>
+                            <input type="text" placeholder="¿Cómo te podemos ayudar?" class="w-full sm:w-64 lg:w-80 pl-10 pr-4 py-2 bg-cyan-500/10 rounded-lg border border-cyan-500/30 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400"/>
                         </div>
-                        <!-- Botón de Notificaciones con Panel -->
                         <div class="relative">
-                            <button id="notifications-btn" class="p-2 rounded-full hover:bg-white/20 transition-colors relative">
-                                <i data-lucide="bell" class="w-5 h-5"></i>
-                                <span id="notification-dot" class="absolute top-1 right-1 block h-2 w-2 rounded-full bg-red-500"></span>
+                            <button id="notifications-btn" class="p-2 rounded-full hover:bg-cyan-500/20 transition-colors relative">
+                                <i data-lucide="bell" class="w-5 h-5 text-cyan-400"></i>
+                                <span id="notification-dot" class="absolute top-1 right-1 block h-2 w-2 rounded-full bg-pink-500 neon-glow-pink"></span>
                             </button>
-                            <div id="notifications-panel" class="hidden absolute top-full right-0 mt-2 w-80 bg-[#8a4f3a] rounded-lg shadow-2xl border border-white/10 text-white z-10">
-                                <div class="p-3 border-b border-white/20">
-                                    <h3 class="font-bold">Notificaciones</h3>
-                                </div>
-                                <div id="notification-list" class="p-1 max-h-96 overflow-y-auto">
-                                    <!-- Las notificaciones se insertarán aquí -->
-                                </div>
+                            <div id="notifications-panel" class="hidden absolute top-full right-0 mt-2 w-80 bg-[#2a3650] rounded-lg shadow-2xl border border-cyan-500/20 text-white z-10">
+                                <div class="p-3 border-b border-cyan-500/20"><h3 class="font-bold text-cyan-400">Notificaciones</h3></div>
+                                <div id="notification-list" class="p-1 max-h-96 overflow-y-auto"></div>
                             </div>
                         </div>
-                        <button id="profile-btn" class="p-2 rounded-full hover:bg-white/20 transition-colors" title="Ver Perfil"><i data-lucide="user-circle" class="w-5 h-5"></i></button>
-                        <button class="logout-btn p-2 rounded-full hover:bg-white/20 transition-colors" title="Cerrar Sesión"><i data-lucide="log-out" class="w-5 h-5"></i></button>
+                        <button id="profile-btn" class="p-2 rounded-full hover:bg-cyan-500/20 transition-colors" title="Ver Perfil"><i data-lucide="user-circle" class="w-5 h-5 text-cyan-400"></i></button>
+                        <button class="logout-btn p-2 rounded-full hover:bg-cyan-500/20 transition-colors" title="Cerrar Sesión"><i data-lucide="log-out" class="w-5 h-5 text-pink-500"></i></button>
                     </div>
                 </header>
                 <div class="mb-12">
-                    <h2 class="text-4xl font-light">¡Hola <span class="font-semibold">Innovador</span>!</h2>
-                    <p class="text-xl text-white/80">Bienvenido(a) a tu espacio</p>
+                    <h2 class="text-4xl font-light">¡Hola <span class="font-semibold text-cyan-400">Innovador</span>!</h2>
+                    <p class="text-xl text-gray-400">Bienvenido(a) a tu espacio</p>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold mb-6">Apps</h3>
+                    <h3 class="text-2xl font-bold mb-6 text-cyan-400">Apps</h3>
                     <div id="app-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6"></div>
                 </div>
             </div>
@@ -102,39 +109,39 @@
         <div class="min-h-screen text-white p-4 sm:p-6 lg:p-8">
             <div class="max-w-4xl mx-auto">
                 <header class="flex items-center justify-between mb-10">
-                    <button class="back-to-dashboard-btn flex items-center gap-2 text-white/80 hover:text-white transition-colors"><i data-lucide="arrow-left" class="w-5 h-5"></i> Volver al Panel</button>
-                    <h1 class="text-3xl font-brand">Perfil y Configuración</h1>
+                    <button class="back-to-dashboard-btn flex items-center gap-2 text-cyan-400/80 hover:text-cyan-400 transition-colors"><i data-lucide="arrow-left" class="w-5 h-5"></i> Volver al Panel</button>
+                    <h1 class="text-3xl font-brand text-cyan-400">Perfil y Configuración</h1>
                     <div class="w-24"></div>
                 </header>
-                <div class="bg-[#8a4f3a]/50 p-8 rounded-2xl shadow-lg">
+                <div class="bg-[#1f283e]/80 p-8 rounded-2xl shadow-lg border border-cyan-500/20">
                     <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-6 mb-10">
-                        <img src="https://placehold.co/128x128/ffffff/6b2f1a?text=User" alt="" class="w-32 h-32 rounded-full border-4 border-white/20"/>
+                        <img src="https://placehold.co/128x128/1a1a2e/00e5ff?text=User" alt="" class="w-32 h-32 rounded-full border-4 border-cyan-500/30"/>
                         <div class="flex-grow">
-                            <h2 class="text-3xl font-bold">Innovador</h2>
-                            <p class="text-white/70">innovador.pro@email.com</p>
-                            <button class="mt-4 px-4 py-2 text-sm bg-white/10 border border-white/20 rounded-lg hover:bg-white/20 transition-colors">Cambiar foto</button>
+                            <h2 class="text-3xl font-bold text-cyan-400">Innovador</h2>
+                            <p class="text-gray-400">innovador.pro@email.com</p>
+                            <button class="mt-4 px-4 py-2 text-sm bg-cyan-500/10 border border-cyan-500/30 rounded-lg hover:bg-cyan-500/20 transition-colors">Cambiar foto</button>
                         </div>
                     </div>
                     <div class="space-y-8">
                         <div>
-                            <h3 class="text-xl font-semibold mb-4 border-b border-white/20 pb-2">Información Personal</h3>
+                            <h3 class="text-xl font-semibold mb-4 border-b border-cyan-500/20 pb-2 text-cyan-400">Información Personal</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div><label class="text-sm font-light text-white/80" for="fullName">Nombre Completo</label><input id="fullName" type="text" value="Innovador Pro" class="w-full mt-2 p-3 bg-white/10 rounded-lg border border-white/20 text-white"/></div>
-                                <div><label class="text-sm font-light text-white/80" for="email">Correo Electrónico</label><input id="email" type="email" value="innovador.pro@email.com" class="w-full mt-2 p-3 bg-white/10 rounded-lg border border-white/20 text-white"/></div>
+                                <div><label class="text-sm font-light text-cyan-400/80" for="fullName">Nombre Completo</label><input id="fullName" type="text" value="Innovador Pro" class="w-full mt-2 p-3 bg-cyan-500/10 rounded-lg border border-cyan-500/30 text-white"/></div>
+                                <div><label class="text-sm font-light text-cyan-400/80" for="email">Correo Electrónico</label><input id="email" type="email" value="innovador.pro@email.com" class="w-full mt-2 p-3 bg-cyan-500/10 rounded-lg border border-cyan-500/30 text-white"/></div>
                             </div>
                         </div>
                         <div>
-                            <h3 class="text-xl font-semibold mb-4 border-b border-white/20 pb-2">Seguridad</h3>
+                            <h3 class="text-xl font-semibold mb-4 border-b border-cyan-500/20 pb-2 text-cyan-400">Seguridad</h3>
                             <div class="space-y-4">
-                               <button class="flex items-center gap-3 w-full text-left p-3 rounded-lg hover:bg-white/10 transition-colors"><i data-lucide="key-round" class="text-white/70"></i><span>Cambiar Contraseña</span></button>
-                               <button class="flex items-center gap-3 w-full text-left p-3 rounded-lg hover:bg-white/10 transition-colors"><i data-lucide="bell" class="text-white/70"></i><span>Gestionar Notificaciones</span></button>
-                               <button class="flex items-center gap-3 w-full text-left p-3 rounded-lg hover:bg-white/10 transition-colors"><i data-lucide="palette" class="text-white/70"></i><span>Apariencia y Tema</span></button>
+                               <button class="flex items-center gap-3 w-full text-left p-3 rounded-lg hover:bg-cyan-500/10 transition-colors"><i data-lucide="key-round" class="text-cyan-400/70"></i><span>Cambiar Contraseña</span></button>
+                               <button class="flex items-center gap-3 w-full text-left p-3 rounded-lg hover:bg-cyan-500/10 transition-colors"><i data-lucide="bell" class="text-cyan-400/70"></i><span>Gestionar Notificaciones</span></button>
+                               <button class="flex items-center gap-3 w-full text-left p-3 rounded-lg hover:bg-cyan-500/10 transition-colors"><i data-lucide="palette" class="text-cyan-400/70"></i><span>Apariencia y Tema</span></button>
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col sm:flex-row items-center justify-between mt-12 pt-8 border-t border-white/20">
-                        <button class="logout-btn w-full sm:w-auto text-center px-6 py-3 text-red-400 hover:bg-red-500/20 rounded-lg transition-colors order-2 sm:order-1 mt-4 sm:mt-0">Cerrar Sesión</button>
-                        <button class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-white text-[#6b2f1a] font-bold rounded-lg hover:bg-gray-200 transition-colors order-1 sm:order-2"><i data-lucide="save" class="w-5 h-5"></i>Guardar Cambios</button>
+                    <div class="flex flex-col sm:flex-row items-center justify-between mt-12 pt-8 border-t border-cyan-500/20">
+                        <button class="logout-btn w-full sm:w-auto text-center px-6 py-3 text-pink-500 hover:bg-pink-500/20 rounded-lg transition-colors order-2 sm:order-1 mt-4 sm:mt-0">Cerrar Sesión</button>
+                        <button class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-cyan-500 text-white font-bold rounded-lg hover:bg-cyan-400 transition-colors order-1 sm:order-2"><i data-lucide="save" class="w-5 h-5"></i>Guardar Cambios</button>
                     </div>
                 </div>
             </div>
@@ -145,20 +152,20 @@
     <div id="content-page" class="hidden">
         <div class="min-h-screen text-white p-4 sm:p-6 lg:p-8">
             <div class="max-w-4xl mx-auto">
-                <header class="flex items-center justify-between mb-10"><button class="back-to-dashboard-btn flex items-center gap-2 text-white/80 hover:text-white transition-colors"><i data-lucide="arrow-left" class="w-5 h-5"></i> Volver al Panel</button></header>
-                <div id="content-container" class="bg-[#8a4f3a]/50 p-8 rounded-2xl shadow-lg"></div>
+                <header class="flex items-center justify-between mb-10"><button class="back-to-dashboard-btn flex items-center gap-2 text-cyan-400/80 hover:text-cyan-400 transition-colors"><i data-lucide="arrow-left" class="w-5 h-5"></i> Volver al Panel</button></header>
+                <div id="content-container" class="bg-[#1f283e]/80 p-8 rounded-2xl shadow-lg border border-cyan-500/20"></div>
             </div>
         </div>
     </div>
 
     <!-- =========== CHATBOT =========== -->
-    <div id="chat-bubble" class="fixed bottom-5 right-5 bg-white text-[#6b2f1a] p-4 rounded-full shadow-lg cursor-pointer hover:scale-110 transition-transform"><i data-lucide="message-circle" class="w-8 h-8"></i></div>
-    <div id="chat-window" class="hidden fixed bottom-24 right-5 w-80 sm:w-96 h-[500px] bg-[#8a4f3a] rounded-xl shadow-2xl flex flex-col transition-all duration-300">
-        <div class="p-4 bg-[#6b2f1a] rounded-t-xl flex justify-between items-center text-white"><h3 class="font-bold">Asistente Virtual</h3><button id="close-chat-btn" class="hover:text-gray-300"><i data-lucide="x" class="w-6 h-6"></i></button></div>
+    <div id="chat-bubble" class="fixed bottom-5 right-5 bg-cyan-500 text-white p-4 rounded-full shadow-lg cursor-pointer hover:scale-110 transition-transform neon-glow-cyan"><i data-lucide="message-circle" class="w-8 h-8"></i></div>
+    <div id="chat-window" class="hidden fixed bottom-24 right-5 w-80 sm:w-96 h-[500px] bg-[#2a3650] rounded-xl shadow-2xl flex flex-col transition-all duration-300 border border-cyan-500/30">
+        <div class="p-4 bg-[#1f283e] rounded-t-xl flex justify-between items-center text-cyan-400"><h3 class="font-bold">Asistente Virtual</h3><button id="close-chat-btn" class="hover:text-gray-300"><i data-lucide="x" class="w-6 h-6"></i></button></div>
         <div id="chat-messages" class="flex-grow p-4 overflow-y-auto flex flex-col space-y-3"></div>
-        <form id="chat-form" class="p-3 border-t border-white/20 flex items-center gap-2">
-            <input id="chat-input" type="text" placeholder="Escribe un comando..." class="flex-grow bg-white/10 p-2 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50">
-            <button type="submit" class="bg-white text-[#6b2f1a] p-2 rounded-full hover:bg-gray-200"><i data-lucide="send" class="w-5 h-5"></i></button>
+        <form id="chat-form" class="p-3 border-t border-cyan-500/20 flex items-center gap-2">
+            <input id="chat-input" type="text" placeholder="Escribe un comando..." class="flex-grow bg-cyan-500/10 p-2 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+            <button type="submit" class="bg-cyan-500 text-white p-2 rounded-full hover:bg-cyan-400"><i data-lucide="send" class="w-5 h-5"></i></button>
         </form>
     </div>
 
@@ -215,7 +222,7 @@
         function showContentPage(appId) {
             const appData = apps.find(app => app.id === appId);
             if (appData) {
-                contentContainer.innerHTML = `<div class="flex items-center gap-4 mb-6"><i data-lucide="${appData.icon}" class="w-12 h-12 text-white"></i><h2 class="text-3xl font-bold">${appData.label}</h2></div><p class="text-white/80 text-lg leading-relaxed">${appData.content}</p>`;
+                contentContainer.innerHTML = `<div class="flex items-center gap-4 mb-6"><i data-lucide="${appData.icon}" class="w-12 h-12 text-cyan-400"></i><h2 class="text-3xl font-bold text-cyan-400">${appData.label}</h2></div><p class="text-gray-300 text-lg leading-relaxed">${appData.content}</p>`;
                 showPage(contentPage);
                 lucide.createIcons();
             }
@@ -227,9 +234,9 @@
         
         // --- LÓGICA DE NOTIFICACIONES ---
         notificationsBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Evita que el evento se propague al documento
+            e.stopPropagation();
             notificationsPanel.classList.toggle('hidden');
-            notificationDot.classList.add('hidden'); // Marcar como leídas
+            notificationDot.classList.add('hidden');
         });
         document.addEventListener('click', (e) => {
             if (!notificationsPanel.contains(e.target) && !notificationsBtn.contains(e.target)) {
@@ -240,11 +247,11 @@
             notificationList.innerHTML = '';
             notifications.forEach(n => {
                 const item = document.createElement('div');
-                item.className = 'p-3 hover:bg-white/10 rounded-md cursor-pointer border-b border-white/5';
+                item.className = 'p-3 hover:bg-cyan-500/10 rounded-md cursor-pointer border-b border-cyan-500/10';
                 item.innerHTML = `
-                    <p class="font-semibold text-sm">${n.title}</p>
-                    <p class="text-xs text-white/70">${n.body}</p>
-                    <p class="text-xs text-white/50 text-right mt-1">${n.time}</p>
+                    <p class="font-semibold text-sm text-cyan-400">${n.title}</p>
+                    <p class="text-xs text-gray-300">${n.body}</p>
+                    <p class="text-xs text-cyan-400/50 text-right mt-1">${n.time}</p>
                 `;
                 notificationList.appendChild(item);
             });
@@ -254,7 +261,7 @@
         function addMessageToChat(text, sender) {
             const messageElement = document.createElement('div');
             messageElement.textContent = text;
-            messageElement.className = sender === 'user' ? 'bg-white text-[#6b2f1a] p-3 rounded-lg self-end max-w-[80%] break-words' : 'bg-white/20 text-white p-3 rounded-lg self-start max-w-[80%] break-words';
+            messageElement.className = sender === 'user' ? 'bg-cyan-500 text-white p-3 rounded-lg self-end max-w-[80%] break-words' : 'bg-gray-600/50 text-gray-200 p-3 rounded-lg self-start max-w-[80%] break-words';
             chatMessages.appendChild(messageElement);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
@@ -288,8 +295,8 @@
             appGrid.innerHTML = '';
             apps.forEach(app => {
                 const appElement = document.createElement('div');
-                appElement.className = 'flex flex-col items-center justify-center text-center p-4 bg-[#6b4f44]/50 rounded-lg shadow-md hover:bg-[#6b4f44]/80 transition-all duration-300 cursor-pointer aspect-square';
-                appElement.innerHTML = `<i data-lucide="${app.icon}" class="w-10 h-10 sm:w-12 sm:h-12 mb-3 text-white"></i><span class="text-white text-xs sm:text-sm font-light">${app.label}</span>`;
+                appElement.className = 'flex flex-col items-center justify-center text-center p-4 bg-[#2a3650] rounded-lg shadow-md hover:bg-cyan-500/20 border border-transparent hover:border-cyan-500/50 transition-all duration-300 cursor-pointer aspect-square';
+                appElement.innerHTML = `<i data-lucide="${app.icon}" class="w-10 h-10 sm:w-12 sm:h-12 mb-3 text-cyan-400"></i><span class="text-gray-300 text-xs sm:text-sm font-light">${app.label}</span>`;
                 appElement.addEventListener('click', () => showContentPage(app.id));
                 appGrid.appendChild(appElement);
             });
