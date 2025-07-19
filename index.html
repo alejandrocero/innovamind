@@ -13,6 +13,11 @@
         .font-brand {
             font-family: 'Georgia', serif;
         }
+        /* Para ocultar la barra de desplazamiento en el chat pero mantener la funcionalidad */
+        #chat-messages::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
     </style>
 </head>
 <body class="bg-[#6b2f1a] font-sans">
@@ -21,7 +26,6 @@
     <div id="login-page">
         <div class="min-h-screen flex items-center justify-center p-4">
             <div class="w-full max-w-6xl mx-auto bg-[#8a4f3a] rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden">
-                <!-- Lado izquierdo: Marca e imagen -->
                 <div class="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center items-center md:items-start text-center md:text-left">
                     <h1 class="text-white text-6xl sm:text-7xl font-brand mb-8">Innovamind</h1>
                     <img 
@@ -31,8 +35,6 @@
                         onerror="this.onerror=null;this.src='https://placehold.co/600x400/8a4f3a/ffffff?text=Equipo+de+Trabajo';"
                     />
                 </div>
-
-                <!-- Lado derecho: Formulario de inicio de sesión -->
                 <div class="w-full md:w-1/2 p-8 sm:p-12 bg-[#6b2f1a] flex flex-col justify-center">
                     <h2 class="text-3xl font-bold text-white mb-8 text-center">INICIAR SESIÓN</h2>
                     <div class="space-y-6">
@@ -57,7 +59,6 @@
     <div id="dashboard-page" class="hidden">
         <div class="min-h-screen text-white p-4 sm:p-6 lg:p-8">
             <div class="max-w-7xl mx-auto">
-                <!-- Cabecera -->
                 <header class="flex flex-col sm:flex-row justify-between items-center mb-8">
                     <h1 class="text-4xl font-brand mb-4 sm:mb-0">Innovamind</h1>
                     <div class="w-full sm:w-auto flex items-center space-x-4">
@@ -70,14 +71,10 @@
                         <button class="logout-btn p-2 rounded-full hover:bg-white/20 transition-colors" title="Cerrar Sesión"><i data-lucide="log-out" class="w-5 h-5"></i></button>
                     </div>
                 </header>
-
-                <!-- Mensaje de bienvenida -->
                 <div class="mb-12">
                     <h2 class="text-4xl font-light">¡Hola <span class="font-semibold">Innovador</span>!</h2>
                     <p class="text-xl text-white/80">Bienvenido(a) a tu espacio</p>
                 </div>
-
-                <!-- Sección de Apps -->
                 <div>
                     <h3 class="text-2xl font-bold mb-6">Apps</h3>
                     <div id="app-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
@@ -94,15 +91,12 @@
             <div class="max-w-4xl mx-auto">
                 <header class="flex items-center justify-between mb-10">
                     <button class="back-to-dashboard-btn flex items-center gap-2 text-white/80 hover:text-white transition-colors">
-                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
-                        Volver al Panel
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i> Volver al Panel
                     </button>
                     <h1 class="text-3xl font-brand">Perfil y Configuración</h1>
-                    <div class="w-24"></div> <!-- Espaciador -->
+                    <div class="w-24"></div>
                 </header>
-
                 <div class="bg-[#8a4f3a]/50 p-8 rounded-2xl shadow-lg">
-                    <!-- Cabecera del perfil -->
                     <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-6 mb-10">
                         <img src="https://placehold.co/128x128/ffffff/6b2f1a?text=User" alt="" class="w-32 h-32 rounded-full border-4 border-white/20"/>
                         <div class="flex-grow">
@@ -111,8 +105,6 @@
                             <button class="mt-4 px-4 py-2 text-sm bg-white/10 border border-white/20 rounded-lg hover:bg-white/20 transition-colors">Cambiar foto</button>
                         </div>
                     </div>
-
-                    <!-- Campos del formulario -->
                     <div class="space-y-8">
                         <div>
                             <h3 class="text-xl font-semibold mb-4 border-b border-white/20 pb-2">Información Personal</h3>
@@ -127,7 +119,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div>
                             <h3 class="text-xl font-semibold mb-4 border-b border-white/20 pb-2">Seguridad</h3>
                             <div class="space-y-4">
@@ -137,8 +128,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Botones de acción -->
                     <div class="flex flex-col sm:flex-row items-center justify-between mt-12 pt-8 border-t border-white/20">
                         <button class="logout-btn w-full sm:w-auto text-center px-6 py-3 text-red-400 hover:bg-red-500/20 rounded-lg transition-colors order-2 sm:order-1 mt-4 sm:mt-0">Cerrar Sesión</button>
                         <button class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-white text-[#6b2f1a] font-bold rounded-lg hover:bg-gray-200 transition-colors order-1 sm:order-2"><i data-lucide="save" class="w-5 h-5"></i>Guardar Cambios</button>
@@ -148,11 +137,45 @@
         </div>
     </div>
 
+    <!-- =========== SECCIÓN DE CONTENIDO DE APP =========== -->
+    <div id="content-page" class="hidden">
+        <div class="min-h-screen text-white p-4 sm:p-6 lg:p-8">
+            <div class="max-w-4xl mx-auto">
+                <header class="flex items-center justify-between mb-10">
+                    <button class="back-to-dashboard-btn flex items-center gap-2 text-white/80 hover:text-white transition-colors">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i> Volver al Panel
+                    </button>
+                </header>
+                <div id="content-container" class="bg-[#8a4f3a]/50 p-8 rounded-2xl shadow-lg">
+                    <!-- El contenido se insertará aquí -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========== CHATBOT =========== -->
+    <div id="chat-bubble" class="fixed bottom-5 right-5 bg-white text-[#6b2f1a] p-4 rounded-full shadow-lg cursor-pointer hover:scale-110 transition-transform">
+        <i data-lucide="message-circle" class="w-8 h-8"></i>
+    </div>
+    <div id="chat-window" class="hidden fixed bottom-24 right-5 w-80 sm:w-96 h-[500px] bg-[#8a4f3a] rounded-xl shadow-2xl flex flex-col transition-all duration-300">
+        <div class="p-4 bg-[#6b2f1a] rounded-t-xl flex justify-between items-center text-white">
+            <h3 class="font-bold">Asistente Virtual</h3>
+            <button id="close-chat-btn" class="hover:text-gray-300"><i data-lucide="x" class="w-6 h-6"></i></button>
+        </div>
+        <div id="chat-messages" class="flex-grow p-4 overflow-y-auto flex flex-col space-y-3"></div>
+        <form id="chat-form" class="p-3 border-t border-white/20 flex items-center gap-2">
+            <input id="chat-input" type="text" placeholder="Escribe un comando..." class="flex-grow bg-white/10 p-2 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50">
+            <button type="submit" class="bg-white text-[#6b2f1a] p-2 rounded-full hover:bg-gray-200"><i data-lucide="send" class="w-5 h-5"></i></button>
+        </form>
+    </div>
+
     <script>
         // --- ELEMENTOS DEL DOM ---
         const loginPage = document.getElementById('login-page');
         const dashboardPage = document.getElementById('dashboard-page');
         const profilePage = document.getElementById('profile-page');
+        const contentPage = document.getElementById('content-page');
+        const contentContainer = document.getElementById('content-container');
         const appGrid = document.getElementById('app-grid');
 
         const loginBtn = document.getElementById('login-btn');
@@ -160,16 +183,23 @@
         const logoutBtns = document.querySelectorAll('.logout-btn');
         const backToDashboardBtns = document.querySelectorAll('.back-to-dashboard-btn');
 
-        // --- DATOS DE LAS APPS ---
+        const chatBubble = document.getElementById('chat-bubble');
+        const chatWindow = document.getElementById('chat-window');
+        const closeChatBtn = document.getElementById('close-chat-btn');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        // --- DATOS DE LAS APPS Y CONTENIDO ---
         const apps = [
-            { icon: 'lightbulb', label: 'Innovación y Tecnología' },
-            { icon: 'wrench', label: 'Herramientas y Sistemas' },
-            { icon: 'area-chart', label: 'Análisis de mercado' },
-            { icon: 'megaphone', label: 'Marketing y Ventas' },
-            { icon: 'users', label: 'Mentoría y Asesoramiento' },
-            { icon: 'network', label: 'Networking' },
-            { icon: 'landmark', label: 'Finanzas y Contabilidad' },
-            { icon: 'shield-check', label: 'Gestión de la Calidad' },
+            { id: 'innovacion', icon: 'lightbulb', label: 'Innovación y Tecnología', content: 'Fomenta la creatividad y adopta nuevas tecnologías para mantener tu negocio a la vanguardia. Explora herramientas de brainstorming, metodologías ágiles y las últimas tendencias en inteligencia artificial y automatización para optimizar tus procesos.' },
+            { id: 'herramientas', icon: 'wrench', label: 'Herramientas y Sistemas', content: 'Accede a un conjunto de herramientas y sistemas pre-configurados para la gestión de proyectos, comunicación de equipos y seguimiento de tareas. Desde Trello hasta Slack, integra las mejores soluciones para tu flujo de trabajo diario.' },
+            { id: 'analisis', icon: 'area-chart', label: 'Análisis de mercado', content: 'Obtén insights valiosos sobre tu competencia y el comportamiento del consumidor. Utiliza nuestras herramientas de análisis para identificar oportunidades de mercado, evaluar la demanda y tomar decisiones estratégicas basadas en datos concretos.' },
+            { id: 'marketing', icon: 'megaphone', label: 'Marketing y Ventas', content: 'Diseña y ejecuta campañas de marketing digital efectivas. Aprende sobre SEO, SEM, marketing de contenidos y gestión de redes sociales para aumentar tu visibilidad, atraer clientes potenciales y potenciar tus ventas.' },
+            { id: 'mentoria', icon: 'users', label: 'Mentoría y Asesoramiento', content: 'Conecta con mentores y expertos de la industria que te guiarán en tu viaje emprendedor. Recibe asesoramiento personalizado en áreas como estrategia de negocio, finanzas, marketing y desarrollo de productos.' },
+            { id: 'networking', icon: 'network', label: 'Networking', content: 'Amplía tu red de contactos profesionales. Participa en eventos exclusivos, foros de discusión y conecta con otros emprendedores, inversores y posibles socios estratégicos para hacer crecer tu negocio.' },
+            { id: 'finanzas', icon: 'landmark', label: 'Finanzas y Contabilidad', content: 'Mantén la salud financiera de tu empresa bajo control. Utiliza nuestras plantillas para proyecciones financieras, gestiona tus flujos de caja y aprende los fundamentos de la contabilidad para una administración transparente y eficiente.' },
+            { id: 'calidad', icon: 'shield-check', label: 'Gestión de la Calidad', content: 'Implementa procesos de mejora continua para asegurar la excelencia de tus productos y servicios. Aprende sobre normativas ISO, metodologías Six Sigma y herramientas de gestión de calidad para satisfacer y superar las expectativas de tus clientes.' },
         ];
 
         // --- LÓGICA DE NAVEGACIÓN ---
@@ -177,33 +207,97 @@
             loginPage.classList.add('hidden');
             dashboardPage.classList.add('hidden');
             profilePage.classList.add('hidden');
+            contentPage.classList.add('hidden');
             pageToShow.classList.remove('hidden');
         }
-
-        loginBtn.addEventListener('click', () => {
-            showPage(dashboardPage);
-        });
-
-        profileBtn.addEventListener('click', () => {
-            showPage(profilePage);
-        });
-
-        logoutBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                showPage(loginPage);
-            });
-        });
-
-        backToDashboardBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                showPage(dashboardPage);
-            });
-        });
         
+        function showContentPage(appId) {
+            const appData = apps.find(app => app.id === appId);
+            if (appData) {
+                contentContainer.innerHTML = `
+                    <div class="flex items-center gap-4 mb-6">
+                        <i data-lucide="${appData.icon}" class="w-12 h-12 text-white"></i>
+                        <h2 class="text-3xl font-bold">${appData.label}</h2>
+                    </div>
+                    <p class="text-white/80 text-lg leading-relaxed">${appData.content}</p>
+                `;
+                showPage(contentPage);
+                lucide.createIcons(); // Re-render icons on new content
+            }
+        }
+
+        loginBtn.addEventListener('click', () => { showPage(dashboardPage); });
+        profileBtn.addEventListener('click', () => { showPage(profilePage); });
+        logoutBtns.forEach(btn => btn.addEventListener('click', () => { showPage(loginPage); }));
+        backToDashboardBtns.forEach(btn => btn.addEventListener('click', () => { showPage(dashboardPage); }));
+        
+        // --- LÓGICA DEL CHATBOT ---
+        function addMessageToChat(text, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.textContent = text;
+            messageElement.className = sender === 'user'
+                ? 'bg-white text-[#6b2f1a] p-3 rounded-lg self-end max-w-[80%] break-words'
+                : 'bg-white/20 text-white p-3 rounded-lg self-start max-w-[80%] break-words';
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function processUserCommand(command) {
+            const lowerCaseCommand = command.toLowerCase();
+            let botResponse = "No he entendido eso. Intenta con 'perfil', 'panel', 'cerrar sesión' o 'abrir [tema]'.";
+            let commandHandled = false;
+
+            // Check for navigation commands
+            if (lowerCaseCommand.includes('perfil')) {
+                botResponse = "Claro, te llevo a tu perfil.";
+                setTimeout(() => showPage(profilePage), 500);
+                commandHandled = true;
+            } else if (lowerCaseCommand.includes('panel') || lowerCaseCommand.includes('inicio')) {
+                botResponse = "Entendido, volviendo al panel principal.";
+                setTimeout(() => showPage(dashboardPage), 500);
+                commandHandled = true;
+            } else if (lowerCaseCommand.includes('sesión') || lowerCaseCommand.includes('salir')) {
+                botResponse = "Cerrando sesión. ¡Hasta pronto!";
+                setTimeout(() => showPage(loginPage), 500);
+                commandHandled = true;
+            } else if (lowerCaseCommand.includes('hola') || lowerCaseCommand.includes('ayuda')) {
+                botResponse = "¡Hola! Soy tu asistente. Puedes pedirme que te lleve a tu 'perfil', al 'panel', 'cerrar sesión' o abrir un tema específico como 'abrir marketing'.";
+                commandHandled = true;
+            }
+
+            // Check for content commands
+            if (!commandHandled) {
+                const foundApp = apps.find(app => lowerCaseCommand.includes(app.id));
+                if (foundApp) {
+                    botResponse = `Entendido, abriendo ${foundApp.label}.`;
+                    setTimeout(() => showContentPage(foundApp.id), 500);
+                    commandHandled = true;
+                }
+            }
+            
+            setTimeout(() => addMessageToChat(botResponse, 'bot'), 300);
+        }
+
+        chatBubble.addEventListener('click', () => {
+            chatWindow.classList.toggle('hidden');
+            if (!chatWindow.classList.contains('hidden') && chatMessages.children.length === 0) {
+                 addMessageToChat("¡Hola! ¿Cómo puedo ayudarte? Escribe 'ayuda' para ver los comandos.", 'bot');
+            }
+        });
+        closeChatBtn.addEventListener('click', () => { chatWindow.classList.add('hidden'); });
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const userInput = chatInput.value.trim();
+            if (userInput) {
+                addMessageToChat(userInput, 'user');
+                processUserCommand(userInput);
+                chatInput.value = '';
+            }
+        });
+
         // --- RENDERIZADO DINÁMICO ---
-        // Función para renderizar los iconos de las apps en el panel principal
         function renderApps() {
-            appGrid.innerHTML = ''; // Limpiar el grid antes de renderizar
+            appGrid.innerHTML = '';
             apps.forEach(app => {
                 const appElement = document.createElement('div');
                 appElement.className = 'flex flex-col items-center justify-center text-center p-4 bg-[#6b4f44]/50 rounded-lg shadow-md hover:bg-[#6b4f44]/80 transition-all duration-300 cursor-pointer aspect-square';
@@ -211,6 +305,7 @@
                     <i data-lucide="${app.icon}" class="w-10 h-10 sm:w-12 sm:h-12 mb-3 text-white"></i>
                     <span class="text-white text-xs sm:text-sm font-light">${app.label}</span>
                 `;
+                appElement.addEventListener('click', () => showContentPage(app.id));
                 appGrid.appendChild(appElement);
             });
         }
@@ -218,10 +313,8 @@
         // --- INICIALIZACIÓN ---
         document.addEventListener('DOMContentLoaded', () => {
             renderApps();
-            // Inicializar los iconos de Lucide en todo el documento
             lucide.createIcons();
         });
-
     </script>
 </body>
 </html>
