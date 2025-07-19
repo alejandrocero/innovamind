@@ -137,7 +137,7 @@
                     <p class="text-xl text-gray-400">Bienvenido(a) a tu espacio</p>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold mb-6 text-cyan-400">Cursos</h3>
+                    <h3 id="dashboard-title" class="text-2xl font-bold mb-6 text-cyan-400">Cursos</h3>
                     <div id="app-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 sm:gap-6"></div>
                 </div>
             </div>
@@ -194,7 +194,7 @@
             <div class="max-w-4xl mx-auto">
                 <header class="flex items-center justify-between mb-10">
                     <button class="back-to-dashboard-btn flex items-center gap-2 text-cyan-400/80 hover:text-cyan-400 transition-colors">
-                        <i data-lucide="arrow-left" class="w-5 h-5"></i> Volver a Apps
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i> Volver a Cursos
                     </button>
                 </header>
                 <div id="subcategory-container" class="bg-[#1f283e]/80 p-8 rounded-2xl shadow-lg border border-cyan-500/20">
@@ -217,6 +217,20 @@
             </div>
         </div>
     </div>
+    
+    <!-- =========== MODAL DE COMPLETADO =========== -->
+    <div id="completion-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+        <div class="bg-[#2a3650] rounded-xl shadow-2xl p-8 text-center max-w-md border border-cyan-500/30">
+            <div class="text-cyan-400 mb-4"><i data-lucide="party-popper" class="w-16 h-16 mx-auto"></i></div>
+            <h3 class="text-2xl font-bold text-white mb-3">¡Felicidades!</h3>
+            <p class="text-gray-300 mb-6">Has terminado el curso de Finanzas y Contabilidad.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button id="download-sheet-btn" class="flex-1 p-3 bg-cyan-500 text-white font-bold rounded-lg hover:bg-cyan-400 transition-colors neon-glow-cyan">Descargar Hoja de Cálculo</button>
+                <button id="close-modal-btn" class="flex-1 p-3 bg-pink-500/20 text-pink-400 font-bold rounded-lg hover:bg-pink-500/30 transition-colors">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- =========== CHATBOT =========== -->
     <div id="chat-bubble" class="fixed bottom-5 right-5 bg-cyan-500 text-white p-4 rounded-full shadow-lg cursor-pointer hover:scale-110 transition-transform neon-glow-cyan"><i data-lucide="message-circle" class="w-8 h-8"></i></div>
@@ -265,9 +279,14 @@
         const chatInput = document.getElementById('chat-input');
         const chatMessages = document.getElementById('chat-messages');
 
+        const completionModal = document.getElementById('completion-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const downloadSheetBtn = document.getElementById('download-sheet-btn');
+
         let currentAppId = null;
         let currentQuestionIndex = 0;
         let userScores = {};
+        let completionStatus = {};
 
         // --- DATOS ---
         const apps = [
@@ -304,9 +323,9 @@
                 { id: 'alliances', label: 'Alianzas Estratégicas', content: 'Aprende a identificar y proponer colaboraciones estratégicas que beneficien a ambas partes y aceleren el crecimiento.'}
             ]},
             { id: 'finanzas', icon: 'landmark', label: 'Finanzas y Contabilidad', subcategories: [
-                { id: 'flujo', label: 'Gestión de Flujo de Caja', content: 'Aprende a monitorear y optimizar tus entradas y salidas de dinero, un factor clave para la supervivencia y el crecimiento de cualquier negocio.'},
-                { id: 'inversion', label: 'Búsqueda de Inversión', content: 'Descubre cómo preparar tu pitch, valorar tu empresa y navegar el proceso de recaudación de fondos con capitalistas de riesgo y ángeles inversores.'},
-                { id: 'modeling', label: 'Modelado Financiero', content: 'Construye modelos financieros sólidos en Excel o Google Sheets para proyectar el futuro de tu empresa y tomar decisiones informadas.'}
+                { id: 'flujo', label: 'identifica, categoriza y estable una estructura', content: 'Aprende a monitorear y optimizar tus entradas y salidas de dinero, un factor clave para la supervivencia y el crecimiento de cualquier negocio.'},
+                { id: 'inversion', label: 'mejora y reduce tus costos', content: 'Descubre cómo preparar tu pitch, valorar tu empresa y navegar el proceso de recaudación de fondos con capitalistas de riesgo y ángeles inversores.'},
+                { id: 'modeling', label: 'como usar una hoja de calculo', content: 'Construye modelos financieros sólidos en Excel o Google Sheets para proyectar el futuro de tu empresa y tomar decisiones informadas.'}
             ]},
              { id: 'calidad', icon: 'shield-check', label: 'Gestión de la Calidad', subcategories: [
                 { id: 'iso', label: 'Normas ISO 9001', content: 'Comprende los principios de la norma ISO 9001 y cómo su implementación puede mejorar la eficiencia y la satisfacción del cliente.'},
@@ -463,7 +482,44 @@
                 `;
                 showPage(contentPage);
                 lucide.createIcons();
+                
+                // Lógica de completado
+                if(appId === 'finanzas') {
+                    if (!completionStatus[appId]) {
+                        completionStatus[appId] = {};
+                    }
+                    completionStatus[appId][subId] = true;
+                    checkFinanceCompletion();
+                }
             }
+        }
+
+        function checkFinanceCompletion() {
+            const financeApp = apps.find(a => a.id === 'finanzas');
+            const financeSubs = financeApp.subcategories.map(s => s.id);
+            const completedSubs = completionStatus['finanzas'] ? Object.keys(completionStatus['finanzas']) : [];
+            
+            if (financeSubs.every(subId => completedSubs.includes(subId))) {
+                completionModal.classList.remove('hidden');
+                lucide.createIcons(); // Renderizar el ícono del modal
+            }
+        }
+
+        function downloadSpreadsheet() {
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + "Fecha,Descripción,Ingreso,Gasto\n"
+                + "2025-07-19,Venta de Producto A,1500,\n"
+                + "2025-07-19,Pago de Software,-50,\n"
+                + "2025-07-20,Consultoría,2500,\n"
+                + "2025-07-21,Publicidad en Redes,-150,\n";
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "control_ingresos_gastos.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         loginBtn.addEventListener('click', startQuiz);
@@ -472,6 +528,8 @@
         logoutBtns.forEach(btn => btn.addEventListener('click', () => showPage(loginPage)));
         backToDashboardBtns.forEach(btn => btn.addEventListener('click', () => showPage(dashboardPage)));
         backToSubcategoriesBtn.addEventListener('click', () => showSubcategoryPage(currentAppId));
+        closeModalBtn.addEventListener('click', () => completionModal.classList.add('hidden'));
+        downloadSheetBtn.addEventListener('click', downloadSpreadsheet);
         
         // --- LÓGICA DE NOTIFICACIONES ---
         notificationsBtn.addEventListener('click', (e) => {
@@ -605,6 +663,7 @@
                 { role: "user", parts: [{ text: "You are Innovabot, a helpful and futuristic assistant for the Innovamind platform. Be concise and helpful. Your answers should be in Spanish." }] },
                 { role: "model", parts: [{ text: "Entendido. Soy Innovabot. ¿Cómo puedo ayudarte a innovar hoy?" }] }
             );
+            document.getElementById('dashboard-title').textContent = 'Cursos';
         }
 
         document.addEventListener('DOMContentLoaded', initializeApp);
