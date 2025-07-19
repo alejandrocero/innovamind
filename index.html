@@ -83,7 +83,7 @@
                                 <i data-lucide="bell" class="w-5 h-5 text-cyan-400"></i>
                                 <span id="notification-dot" class="absolute top-1 right-1 block h-2 w-2 rounded-full bg-pink-500 neon-glow-pink"></span>
                             </button>
-                            <div id="notifications-panel" class="hidden absolute top-full left-0 sm:left-auto sm:right-0 mt-2 w-80 bg-[#2a3650] rounded-lg shadow-2xl border border-cyan-500/20 text-white z-10">
+                            <div id="notifications-panel" class="hidden absolute top-full right-0 mt-2 w-80 bg-[#2a3650] rounded-lg shadow-2xl border border-cyan-500/20 text-white z-10 md:w-96">
                                 <div class="p-3 border-b border-cyan-500/20"><h3 class="font-bold text-cyan-400">Notificaciones</h3></div>
                                 <div id="notification-list" class="p-1 max-h-96 overflow-y-auto"></div>
                             </div>
@@ -161,7 +161,7 @@
     <!-- =========== CHATBOT =========== -->
     <div id="chat-bubble" class="fixed bottom-5 right-5 bg-cyan-500 text-white p-4 rounded-full shadow-lg cursor-pointer hover:scale-110 transition-transform neon-glow-cyan"><i data-lucide="message-circle" class="w-8 h-8"></i></div>
     <div id="chat-window" class="hidden fixed bottom-24 right-5 w-80 sm:w-96 h-[500px] bg-[#2a3650] rounded-xl shadow-2xl flex flex-col transition-all duration-300 border border-cyan-500/30">
-        <div class="p-4 bg-[#1f283e] rounded-t-xl flex justify-between items-center text-cyan-400"><h3 class="font-bold">Asistente Virtual</h3><button id="close-chat-btn" class="hover:text-gray-300"><i data-lucide="x" class="w-6 h-6"></i></button></div>
+        <div class="p-4 bg-[#1f283e] rounded-t-xl flex justify-between items-center text-cyan-400"><h3 class="font-bold">Innovabot</h3><button id="close-chat-btn" class="hover:text-gray-300"><i data-lucide="x" class="w-6 h-6"></i></button></div>
         <div id="chat-messages" class="flex-grow p-4 overflow-y-auto flex flex-col space-y-3"></div>
         <form id="chat-form" class="p-3 border-t border-cyan-500/20 flex items-center gap-2">
             <input id="chat-input" type="text" placeholder="Escribe un comando..." class="flex-grow bg-cyan-500/10 p-2 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400">
@@ -272,7 +272,7 @@
             if (lowerCaseCommand.includes('perfil')) { botResponse = "Claro, te llevo a tu perfil."; setTimeout(() => showPage(profilePage), 500); commandHandled = true; }
             else if (lowerCaseCommand.includes('panel') || lowerCaseCommand.includes('inicio')) { botResponse = "Entendido, volviendo al panel principal."; setTimeout(() => showPage(dashboardPage), 500); commandHandled = true; }
             else if (lowerCaseCommand.includes('sesión') || lowerCaseCommand.includes('salir')) { botResponse = "Cerrando sesión. ¡Hasta pronto!"; setTimeout(() => showPage(loginPage), 500); commandHandled = true; }
-            else if (lowerCaseCommand.includes('hola') || lowerCaseCommand.includes('ayuda')) { botResponse = "¡Hola! Soy tu asistente. Puedes pedirme que te lleve a tu 'perfil', al 'panel', 'cerrar sesión' o abrir un tema específico como 'abrir marketing'."; commandHandled = true; }
+            else if (lowerCaseCommand.includes('hola') || lowerCaseCommand.includes('ayuda')) { botResponse = "¡Hola! Soy Innovabot. Puedes pedirme que te lleve a tu 'perfil', al 'panel', 'cerrar sesión' o abrir un tema específico como 'abrir marketing'."; commandHandled = true; }
             if (!commandHandled) {
                 const foundApp = apps.find(app => lowerCaseCommand.includes(app.id));
                 if (foundApp) { botResponse = `Entendido, abriendo ${foundApp.label}.`; setTimeout(() => showContentPage(foundApp.id), 500); commandHandled = true; }
@@ -281,7 +281,7 @@
         }
         chatBubble.addEventListener('click', () => {
             chatWindow.classList.toggle('hidden');
-            if (!chatWindow.classList.contains('hidden') && chatMessages.children.length === 0) { addMessageToChat("¡Hola! ¿Cómo puedo ayudarte? Escribe 'ayuda' para ver los comandos.", 'bot'); }
+            if (!chatWindow.classList.contains('hidden') && chatMessages.children.length === 0) { addMessageToChat("¡Hola! Soy Innovabot. ¿Cómo puedo ayudarte? Escribe 'ayuda' para ver los comandos.", 'bot'); }
         });
         closeChatBtn.addEventListener('click', () => { chatWindow.classList.add('hidden'); });
         chatForm.addEventListener('submit', (e) => {
