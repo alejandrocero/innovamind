@@ -107,8 +107,8 @@
                     <p class="text-xl text-gray-400">Bienvenido(a) a tu espacio</p>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold mb-6 text-cyan-400">Apps</h3>
-                    <div id="app-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6"></div>
+                    <h3 class="text-2xl font-bold mb-6 text-cyan-400">Cursos</h3>
+                    <div id="app-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 sm:gap-6"></div>
                 </div>
             </div>
         </div>
@@ -157,12 +157,32 @@
             </div>
         </div>
     </div>
+    
+    <!-- =========== SECCIÓN DE SUBCATEGORÍAS =========== -->
+    <div id="subcategory-page" class="hidden">
+        <div class="min-h-screen text-white p-4 sm:p-6 lg:p-8">
+            <div class="max-w-4xl mx-auto">
+                <header class="flex items-center justify-between mb-10">
+                    <button class="back-to-dashboard-btn flex items-center gap-2 text-cyan-400/80 hover:text-cyan-400 transition-colors">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i> Volver a Apps
+                    </button>
+                </header>
+                <div id="subcategory-container" class="bg-[#1f283e]/80 p-8 rounded-2xl shadow-lg border border-cyan-500/20">
+                    <!-- El contenido de las subcategorías se insertará aquí -->
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- =========== SECCIÓN DE CONTENIDO DE APP =========== -->
+    <!-- =========== SECCIÓN DE CONTENIDO DE CURSO =========== -->
     <div id="content-page" class="hidden">
         <div class="min-h-screen text-white p-4 sm:p-6 lg:p-8">
             <div class="max-w-4xl mx-auto">
-                <header class="flex items-center justify-between mb-10"><button class="back-to-dashboard-btn flex items-center gap-2 text-cyan-400/80 hover:text-cyan-400 transition-colors"><i data-lucide="arrow-left" class="w-5 h-5"></i> Volver al Panel</button></header>
+                <header class="flex items-center justify-between mb-10">
+                    <button id="back-to-subcategories-btn" class="back-btn flex items-center gap-2 text-cyan-400/80 hover:text-cyan-400 transition-colors">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i> Volver a Subcategorías
+                    </button>
+                </header>
                 <div id="content-container" class="bg-[#1f283e]/80 p-8 rounded-2xl shadow-lg border border-cyan-500/20"></div>
             </div>
         </div>
@@ -184,21 +204,24 @@
         const loginPage = document.getElementById('login-page');
         const dashboardPage = document.getElementById('dashboard-page');
         const profilePage = document.getElementById('profile-page');
+        const subcategoryPage = document.getElementById('subcategory-page');
         const contentPage = document.getElementById('content-page');
+        
+        const subcategoryContainer = document.getElementById('subcategory-container');
         const contentContainer = document.getElementById('content-container');
         const appGrid = document.getElementById('app-grid');
+        
         const loginBtn = document.getElementById('login-btn');
         const profileBtn = document.getElementById('profile-btn');
         const logoutBtns = document.querySelectorAll('.logout-btn');
         const backToDashboardBtns = document.querySelectorAll('.back-to-dashboard-btn');
+        const backToSubcategoriesBtn = document.getElementById('back-to-subcategories-btn');
 
-        // --- ELEMENTOS DE NOTIFICACIONES ---
         const notificationsBtn = document.getElementById('notifications-btn');
         const notificationsPanel = document.getElementById('notifications-panel');
         const notificationDot = document.getElementById('notification-dot');
         const notificationList = document.getElementById('notification-list');
 
-        // --- ELEMENTOS DEL CHATBOT ---
         const chatBubble = document.getElementById('chat-bubble');
         const chatWindow = document.getElementById('chat-window');
         const closeChatBtn = document.getElementById('close-chat-btn');
@@ -206,42 +229,117 @@
         const chatInput = document.getElementById('chat-input');
         const chatMessages = document.getElementById('chat-messages');
 
+        let currentAppId = null;
+
         // --- DATOS ---
         const apps = [
-            { id: 'innovacion', icon: 'lightbulb', label: 'Innovación y Tecnología', content: 'Fomenta la creatividad y adopta nuevas tecnologías para mantener tu negocio a la vanguardia. Explora herramientas de brainstorming, metodologías ágiles y las últimas tendencias en inteligencia artificial y automatización para optimizar tus procesos.' },
-            { id: 'herramientas', icon: 'wrench', label: 'Herramientas y Sistemas', content: 'Accede a un conjunto de herramientas y sistemas pre-configurados para la gestión de proyectos, comunicación de equipos y seguimiento de tareas. Desde Trello hasta Slack, integra las mejores soluciones para tu flujo de trabajo diario.' },
-            { id: 'analisis', icon: 'area-chart', label: 'Análisis de mercado', content: 'Obtén insights valiosos sobre tu competencia y el comportamiento del consumidor. Utiliza nuestras herramientas de análisis para identificar oportunidades de mercado, evaluar la demanda y tomar decisiones estratégicas basadas en datos concretos.' },
-            { id: 'marketing', icon: 'megaphone', label: 'Marketing y Ventas', content: 'Diseña y ejecuta campañas de marketing digital efectivas. Aprende sobre SEO, SEM, marketing de contenidos y gestión de redes sociales para aumentar tu visibilidad, atraer clientes potenciales y potenciar tus ventas.' },
-            { id: 'mentoria', icon: 'users', label: 'Mentoría y Asesoramiento', content: 'Conecta con mentores y expertos de la industria que te guiarán en tu viaje emprendedor. Recibe asesoramiento personalizado en áreas como estrategia de negocio, finanzas, marketing y desarrollo de productos.' },
-            { id: 'networking', icon: 'network', label: 'Networking', content: 'Amplía tu red de contactos profesionales. Participa en eventos exclusivos, foros de discusión y conecta con otros emprendedores, inversores y posibles socios estratégicos para hacer crecer tu negocio.' },
-            { id: 'finanzas', icon: 'landmark', label: 'Finanzas y Contabilidad', content: 'Mantén la salud financiera de tu empresa bajo control. Utiliza nuestras plantillas para proyecciones financieras, gestiona tus flujos de caja y aprende los fundamentos de la contabilidad para una administración transparente y eficiente.' },
-            { id: 'calidad', icon: 'shield-check', label: 'Gestión de la Calidad', content: 'Implementa procesos de mejora continua para asegurar la excelencia de tus productos y servicios. Aprende sobre normativas ISO, metodologías Six Sigma y herramientas de gestión de calidad para satisfacer y superar las expectativas de tus clientes.' },
+            { id: 'innovacion', icon: 'lightbulb', label: 'Innovación y Tecnología', subcategories: [
+                { id: 'ia', label: 'Inteligencia Artificial', content: 'Descubre cómo la IA puede automatizar tareas, ofrecer análisis predictivos y personalizar la experiencia del cliente para impulsar el crecimiento.'},
+                { id: 'agile', label: 'Metodologías Ágiles', content: 'Aprende a implementar Scrum y Kanban para mejorar la flexibilidad, acelerar los tiempos de entrega y fomentar la colaboración en tus equipos.'},
+                { id: 'iot', label: 'Internet de las Cosas (IoT)', content: 'Explora cómo los dispositivos conectados pueden optimizar operaciones, recopilar datos valiosos y crear nuevos modelos de negocio.'},
+                { id: 'blockchain', label: 'Blockchain y Web3', content: 'Entiende los fundamentos de la tecnología blockchain, los contratos inteligentes y las oportunidades de la web descentralizada.'}
+            ]},
+            { id: 'herramientas', icon: 'wrench', label: 'Herramientas y Sistemas', subcategories: [
+                { id: 'project', label: 'Gestión de Proyectos', content: 'Compara y aprende a usar herramientas como Asana, Trello y Jira para mantener tus proyectos organizados y a tiempo.'},
+                { id: 'comms', label: 'Comunicación de Equipos', content: 'Optimiza la colaboración con plataformas como Slack y Microsoft Teams, integrando canales, bots y videollamadas.'},
+                { id: 'crm', label: 'CRM y Gestión de Clientes', content: 'Domina los sistemas de CRM como HubSpot o Salesforce para gestionar tu embudo de ventas y mejorar la relación con tus clientes.'}
+            ]},
+            { id: 'analisis', icon: 'area-chart', label: 'Análisis de Mercado', subcategories: [
+                { id: 'competitors', label: 'Análisis Competitivo', content: 'Aprende a usar frameworks como el análisis FODA y las 5 Fuerzas de Porter para entender a tu competencia y encontrar tu nicho.'},
+                { id: 'keywords', label: 'Investigación de Palabras Clave', content: 'Utiliza herramientas como Ahrefs o SEMrush para identificar las palabras clave que tus clientes potenciales están buscando.'},
+                { id: 'surveys', label: 'Encuestas y Feedback', content: 'Diseña encuestas efectivas con SurveyMonkey o Google Forms para obtener retroalimentación valiosa y validar tus ideas.'}
+            ]},
+            { id: 'marketing', icon: 'megaphone', label: 'Marketing y Ventas', subcategories: [
+                { id: 'seo', label: 'SEO y SEM', content: 'Domina las técnicas de optimización para motores de búsqueda (SEO) y marketing (SEM) para aumentar drásticamente tu visibilidad en línea.'},
+                { id: 'social', label: 'Redes Sociales', content: 'Crea estrategias de contenido efectivas para construir una comunidad, interactuar con tu audiencia y convertir seguidores en clientes.'},
+                { id: 'email', label: 'Email Marketing', content: 'Aprende a diseñar campañas de correo electrónico personalizadas que nutran a tus leads y fomenten la lealtad del cliente.'},
+                { id: 'funnels', label: 'Embudos de Venta', content: 'Construye embudos de conversión automatizados que guíen a los usuarios desde el primer contacto hasta la compra final.'}
+            ]},
+            { id: 'mentoria', icon: 'users', label: 'Mentoría y Asesoramiento', subcategories: [
+                { id: 'connect', label: 'Conectar con un Mentor', content: 'Navega nuestro directorio de mentores expertos y encuentra el adecuado para tu industria y etapa de crecimiento.'},
+                { id: 'sessions', label: 'Sesiones Grupales', content: 'Participa en mesas redondas y talleres grupales para aprender de las experiencias y desafíos de otros emprendedores.'},
+                { id: 'growth', label: 'Planes de Crecimiento', content: 'Trabaja con un asesor para desarrollar un plan de crecimiento estratégico y personalizado para tu negocio.'}
+            ]},
+            { id: 'networking', icon: 'network', label: 'Networking', subcategories: [
+                { id: 'events', label: 'Eventos Virtuales', content: 'Accede a nuestro calendario de webinars, paneles y ferias virtuales para conectar con líderes de la industria.'},
+                { id: 'forums', label: 'Foros de Discusión', content: 'Únete a conversaciones temáticas en nuestros foros para resolver dudas, compartir conocimientos y encontrar colaboradores.'},
+                { id: 'alliances', label: 'Alianzas Estratégicas', content: 'Aprende a identificar y proponer colaboraciones estratégicas que beneficien a ambas partes y aceleren el crecimiento.'}
+            ]},
+            { id: 'finanzas', icon: 'landmark', label: 'Finanzas y Contabilidad', subcategories: [
+                { id: 'flujo', label: 'Gestión de Flujo de Caja', content: 'Aprende a monitorear y optimizar tus entradas y salidas de dinero, un factor clave para la supervivencia y el crecimiento de cualquier negocio.'},
+                { id: 'inversion', label: 'Búsqueda de Inversión', content: 'Descubre cómo preparar tu pitch, valorar tu empresa y navegar el proceso de recaudación de fondos con capitalistas de riesgo y ángeles inversores.'},
+                { id: 'modeling', label: 'Modelado Financiero', content: 'Construye modelos financieros sólidos en Excel o Google Sheets para proyectar el futuro de tu empresa y tomar decisiones informadas.'}
+            ]},
+             { id: 'calidad', icon: 'shield-check', label: 'Gestión de la Calidad', subcategories: [
+                { id: 'iso', label: 'Normas ISO 9001', content: 'Comprende los principios de la norma ISO 9001 y cómo su implementación puede mejorar la eficiencia y la satisfacción del cliente.'},
+                { id: 'sixsigma', label: 'Metodología Six Sigma', content: 'Aprende a utilizar el enfoque DMAIC (Definir, Medir, Analizar, Mejorar, Controlar) para reducir defectos y optimizar procesos.'},
+                { id: 'kaizen', label: 'Mejora Continua (Kaizen)', content: 'Fomenta una cultura de mejora continua en tu organización, donde cada miembro del equipo contribuye con pequeñas mejoras constantes.'}
+            ]},
         ];
         const notifications = [
             { title: 'Nueva tarea asignada', body: 'Revisar la propuesta de marketing.', time: 'hace 5 min' },
             { title: 'Reunión programada', body: 'Reunión de equipo mañana a las 10 AM.', time: 'hace 1 hora' },
             { title: '¡Nuevo logro!', body: 'Has completado el módulo de Finanzas.', time: 'hace 3 horas' },
-            { title: 'Recordatorio de pago', body: 'Tu suscripción se renovará pronto.', time: 'ayer' },
         ];
         let chatHistory = [];
 
         // --- LÓGICA DE NAVEGACIÓN ---
         function showPage(pageToShow) {
-            [loginPage, dashboardPage, profilePage, contentPage].forEach(p => p.classList.add('hidden'));
+            [loginPage, dashboardPage, profilePage, subcategoryPage, contentPage].forEach(p => p.classList.add('hidden'));
             pageToShow.classList.remove('hidden');
         }
-        function showContentPage(appId) {
-            const appData = apps.find(app => app.id === appId);
-            if (appData) {
-                contentContainer.innerHTML = `<div class="flex items-center gap-4 mb-6"><i data-lucide="${appData.icon}" class="w-12 h-12 text-cyan-400"></i><h2 class="text-3xl font-bold text-cyan-400">${appData.label}</h2></div><p class="text-gray-300 text-lg leading-relaxed">${appData.content}</p>`;
+        
+        function showSubcategoryPage(appId) {
+            currentAppId = appId;
+            const app = apps.find(a => a.id === appId);
+            if (!app) return;
+
+            subcategoryContainer.innerHTML = `
+                <div class="flex items-center gap-4 mb-8">
+                    <i data-lucide="${app.icon}" class="w-12 h-12 text-cyan-400"></i>
+                    <h2 class="text-3xl font-bold text-cyan-400">${app.label}</h2>
+                </div>
+                <div class="space-y-4">
+                    ${app.subcategories.map(sub => `
+                        <button class="subcategory-btn w-full text-left p-4 bg-cyan-500/10 rounded-lg hover:bg-cyan-500/20 transition-colors flex justify-between items-center" data-sub-id="${sub.id}">
+                            <span>${sub.label}</span>
+                            <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.querySelectorAll('.subcategory-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    showContentPage(appId, btn.dataset.subId);
+                });
+            });
+
+            showPage(subcategoryPage);
+            lucide.createIcons();
+        }
+
+        function showContentPage(appId, subId) {
+            const app = apps.find(a => a.id === appId);
+            const subcategory = app?.subcategories.find(s => s.id === subId);
+            if (subcategory) {
+                contentContainer.innerHTML = `
+                    <div class="flex items-center gap-4 mb-6">
+                        <i data-lucide="${app.icon}" class="w-12 h-12 text-cyan-400"></i>
+                        <h2 class="text-3xl font-bold text-cyan-400">${subcategory.label}</h2>
+                    </div>
+                    <p class="text-gray-300 text-lg leading-relaxed">${subcategory.content}</p>
+                `;
                 showPage(contentPage);
                 lucide.createIcons();
             }
         }
+
         loginBtn.addEventListener('click', () => showPage(dashboardPage));
         profileBtn.addEventListener('click', () => showPage(profilePage));
         logoutBtns.forEach(btn => btn.addEventListener('click', () => showPage(loginPage)));
         backToDashboardBtns.forEach(btn => btn.addEventListener('click', () => showPage(dashboardPage)));
+        backToSubcategoriesBtn.addEventListener('click', () => showSubcategoryPage(currentAppId));
         
         // --- LÓGICA DE NOTIFICACIONES ---
         notificationsBtn.addEventListener('click', (e) => {
@@ -280,46 +378,33 @@
 
         async function getGeminiResponse(prompt) {
             addMessageToChat('', 'bot-loading');
-            const apiKey = ""; // Dejar en blanco para que Canvas lo proporcione
+            const apiKey = "";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-            
             chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-
             const payload = { contents: chatHistory };
-
             try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!response.ok) {
-                    throw new Error(`API request failed with status ${response.status}`);
-                }
+                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
                 const result = await response.json();
-                
                 const loadingElement = document.querySelector('.bot-loading');
                 if (loadingElement) loadingElement.remove();
-
                 if (result.candidates && result.candidates.length > 0) {
                     const botResponse = result.candidates[0].content.parts[0].text;
                     addMessageToChat(botResponse, 'bot');
                     chatHistory.push({ role: "model", parts: [{ text: botResponse }] });
                 } else {
-                    addMessageToChat('Lo siento, no pude procesar tu solicitud en este momento.', 'bot');
+                    addMessageToChat('Lo siento, no pude procesar tu solicitud.', 'bot');
                 }
             } catch (error) {
                 console.error("Error calling Gemini API:", error);
                 const loadingElement = document.querySelector('.bot-loading');
                 if (loadingElement) loadingElement.remove();
-                addMessageToChat('Hubo un error al conectar con mis circuitos. Por favor, intenta de nuevo.', 'bot');
+                addMessageToChat('Hubo un error al conectar con mis circuitos. Intenta de nuevo.', 'bot');
             }
         }
 
         async function processUserCommand(command) {
             const lowerCaseCommand = command.toLowerCase();
-
-            // Comandos locales de navegación
             const localCommands = {
                 'perfil': { response: "Claro, te llevo a tu perfil.", action: () => showPage(profilePage) },
                 'panel': { response: "Entendido, volviendo al panel principal.", action: () => showPage(dashboardPage) },
@@ -328,7 +413,6 @@
                 'salir': { response: "Cerrando sesión. ¡Hasta pronto!", action: () => showPage(loginPage) },
                 'ayuda': { response: "¡Hola! Soy Innovabot. Puedes hacerme preguntas o usar comandos como 'perfil', 'panel', 'cerrar sesión' o 'abrir [tema]'.", action: () => {} }
             };
-
             let commandHandled = false;
             for (const key in localCommands) {
                 if (lowerCaseCommand.includes(key)) {
@@ -338,17 +422,14 @@
                     break;
                 }
             }
-            
             if (!commandHandled) {
-                const foundApp = apps.find(app => lowerCaseCommand.includes(app.id));
+                const foundApp = apps.find(a => lowerCaseCommand.includes(a.id));
                 if (foundApp) {
                     addMessageToChat(`Entendido, abriendo ${foundApp.label}.`, 'bot');
-                    setTimeout(() => showContentPage(foundApp.id), 500);
+                    setTimeout(() => showSubcategoryPage(foundApp.id), 500);
                     commandHandled = true;
                 }
             }
-
-            // Si no es un comando local, llamar a Gemini
             if (!commandHandled) {
                 await getGeminiResponse(command);
             }
@@ -361,7 +442,6 @@
             }
         });
         closeChatBtn.addEventListener('click', () => { chatWindow.classList.add('hidden'); });
-        
         chatForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const userInput = chatInput.value.trim();
@@ -379,7 +459,7 @@
                 const appElement = document.createElement('div');
                 appElement.className = 'flex flex-col items-center justify-center text-center p-4 bg-[#2a3650] rounded-lg shadow-md hover:bg-cyan-500/20 border border-transparent hover:border-cyan-500/50 transition-all duration-300 cursor-pointer aspect-square';
                 appElement.innerHTML = `<i data-lucide="${app.icon}" class="w-10 h-10 sm:w-12 sm:h-12 mb-3 text-cyan-400"></i><span class="text-gray-300 text-xs sm:text-sm font-light">${app.label}</span>`;
-                appElement.addEventListener('click', () => showContentPage(app.id));
+                appElement.addEventListener('click', () => showSubcategoryPage(app.id));
                 appGrid.appendChild(appElement);
             });
         }
